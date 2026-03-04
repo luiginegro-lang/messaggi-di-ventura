@@ -66,20 +66,25 @@
     margin-bottom: 20px;
     text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7);
   }
-  .subtitle {
-    color: #706b62;
+  .subtitle-link {
+    display: block;
+    color: #8b2252;
+    font-family: 'Lora', 'Georgia', serif;
     font-size: clamp(12px, 2.2vw, 14px);
     letter-spacing: 0.12em;
     margin-bottom: 12vh;
     text-shadow: 0 1px 15px rgba(0,0,0,0.8);
+    text-decoration: none;
+    transition: color 0.4s;
   }
+  .subtitle-link:hover { color: #a52a6a; }
   .home-nav {
     position: absolute;
     bottom: 7vh;
     z-index: 2;
   }
   .nav-link {
-    color: #2a2825;
+    color: #8b2252;
     font-family: 'Lora', 'Georgia', serif;
     font-size: 13px;
     letter-spacing: 0.06em;
@@ -88,7 +93,7 @@
     transition: color 0.4s;
     user-select: none;
   }
-  .nav-link:hover { color: #706b62; }
+  .nav-link:hover { color: #a52a6a; }
 
   /* ── CARTA ── */
   #carta { background: #0b0b0a; }
@@ -152,22 +157,22 @@
   }
   .info-body + .info-body { margin-top: 20px; }
   .info-body-link {
-    color: #807a70;
+    color: #8b2252;
     text-decoration: none;
     transition: color 0.3s;
   }
-  .info-body-link:hover { color: #a09a90; }
+  .info-body-link:hover { color: #a52a6a; }
   .info-foot {
     color: #3a3530;
     font-size: clamp(11px, 1.8vw, 12px);
     letter-spacing: 0.03em;
   }
   .info-foot a {
-    color: #3a3530;
+    color: #8b2252;
     text-decoration: none;
     transition: color 0.3s;
   }
-  .info-foot a:hover { color: #706b62; }
+  .info-foot a:hover { color: #a52a6a; }
 
   /* ── BOTTOM NAV ── */
   .btn-back {
@@ -175,7 +180,7 @@
     bottom: 7vh;
     left: 50%;
     transform: translateX(-50%);
-    color: #2a2825;
+    color: #8b2252;
     font-family: 'Lora', 'Georgia', serif;
     font-size: 13px;
     letter-spacing: 0.06em;
@@ -185,7 +190,7 @@
     user-select: none;
     z-index: 10;
   }
-  .btn-back:hover { color: #706b62; }
+  .btn-back:hover { color: #a52a6a; }
 </style>
 </head>
 <body>
@@ -200,7 +205,7 @@
   </svg>
   <div class="home-content" id="homeTouch">
     <div class="title">Messaggi di ventura</div>
-    <div class="subtitle">la casa cafausica</div>
+    <a href="https://www.instagram.com/lac.o.le.mon/?hl=en" target="_blank" rel="noopener" class="subtitle-link">lu cafausu / la festa dei vivi (che riflettono sulla morte)</a>
   </div>
   <div class="home-nav">
     <button class="nav-link" id="btnInfo">nota</button>
