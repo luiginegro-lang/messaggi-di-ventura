@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Messaggi di ventura — la casa cafausica</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0b0b0a; }
+  body { font-family: 'Lora', 'Georgia', serif; }
+
+  .screen {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+  .screen.active { opacity: 1; pointer-events: auto; }
+
+  #home { cursor: default; }
+
+  .tarot-bg {
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+  .tarot-bg img {
+    position: absolute;
+    top: 50%; left: 50%;
+    height: 140%; width: auto;
+    object-fit: contain;
+    filter: grayscale(100%) blur(5px) brightness(0.28) contrast(1.3);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.0);
+    transition: none;
+  }
+  .tarot-bg img.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+    transition: opacity 2.5s ease-in, transform 8s linear;
+  }
+  .tarot-bg img.fading {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.2);
+    transition: opacity 2s ease-out, transform 2s ease-out;
+  }
+
+  .vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 12%, #0b0b0a 68%);
+    pointer-events: none;
+  }
+
+  .grain {
+    position: absolute; inset: 0;
+    opacity: 0.1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  .home-content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+
+  .title {
+    color: #f0ece6;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7);
+  }
+
+  .subtitle {
+    color: #706b62;
+    font-size: clamp(12px, 2.2vw, 14px);
+    letter-spacing: 0.12em;
+    margin-bottom: 10vh;
+    text-shadow: 0 1px 15px rgba(0,0,0,0.8);
+  }
+
+  .btn-estrai {
+    color: #706b62;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: clamp(18px, 3.6vw, 24px);
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    padding: 16px 44px;
+    border: 1px solid transparent;
+    background: none;
+    text-shadow: 0 1px 15px rgba(0,0,0,0.8);
+    transition: all 0.5s ease;
+  }
+  .btn-estrai:hover {
+    color: #f0ece6;
+    border-color: #363330;
+  }
+
+  #carta { background: #0b0b0a; }
+
+  .messaggio {
+    color: #f0ece6;
+    font-size: clamp(19px, 4vw, 28px);
+    font-weight: 400;
+    line-height: 1.75;
+    text-align: center;
+    max-width: 580px;
+    padding: 0 8vw;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 2s ease, transform 2s ease;
+  }
+  .messaggio.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .btn-torna {
+    position: absolute;
+    bottom: 8vh;
+    color: #363330;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.4s;
+    user-select: none;
+  }
+  .btn-torna:hover { color: #706b62; }
+</style>
+</head>
+<body>
+
+<div id="home" class="screen active">
+  <div class="tarot-bg" id="tarotBg"></div>
+  <div class="vignette"></div>
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg">
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch"/></filter>
+    <rect width="100%" height="100%" filter="url(#grain)"/>
+  </svg>
+  <div class="home-content">
+    <div class="title">Messaggi di ventura</div>
+    <div class="subtitle">la casa cafausica</div>
+    <button class="btn-estrai" id="btnEstrai">estrai</button>
+  </div>
+</div>
+
+<div id="carta" class="screen">
+  <div class="messaggio" id="msgText"></div>
+  <button class="btn-torna" id="btnTorna">torna</button>
+</div>
+
+<script>
+const MESSAGGI = [
+  "Gli strumenti sono sul tavolo: coppe, coltelli, denari e dadi, i bisturi tra le mani. Il chirurgo è cieco.",
+  "Tutte le carte son da giocare.",
+  "Al bivio siamo tormento, ci fermiamo edificando nella sabbia, basterebbe interrogarci, la fonte è limpida, ci indica la direzione.",
+  "Le parole che esprimono il lamento per la morte e il rimpianto per ciò che non è accaduto, sono la prima poesia.",
+  "La torre crollò, morirono centomila nessuno, uno si salvò.",
+  "Zampilla la sorgente dal tetto del mondo, ricade, prosegue nel letto del fiume, risale per grondaie celesti. Come in alto così in basso.",
+  "Il silenzio è il sacro, prima della parola umana. Sfida, profanazione, ri-creazione.",
+  "La consapevolezza e la capacità del superamento dei due soffi, delle dualità amorose o guerriere, è il gesto dell'arte, della genesi, della riproduzione, dell'essere altri da sé.",
+  "Lei che delle Lune ha in mano il testo, ci ammanta, se ti appoggi al suo grembo ascolti l'Ade.",
+  "Sognammo gli alberi del falso pepe ed erano vivi, nel sogno si muovevano nella brezza autunnale. In un istante tutto mutò, il vento li divorò e noi contammo nei giorni i brandelli: erano 78 e capimmo che non c'è scampo se ciò che sogni segue la vita.",
+  "Mai dare una spada a un uomo che non sa danzare.",
+  "Abbiamo portato i nostri morti, in passeggiate e processioni, in autobus e in barca, per strada, dentro palazzi o in edifici abbandonati.",
+  "Mi tronco il tronco, la coda ricade, assoldo il soldo e sguaino le spade.",
+  "La lingua pende, passa il mulo, si apre il culo, il bastone si stende e si chiudon le tende.",
+  "Il re fischia e lei s'immischia, arriva il folle, son pieno di bolle, scorrazza senza corazza la fregola di luna pazza.",
+  "La donna impera, la primavera esplode, la vita si rigenera da ciò che è sepolto.",
+  "Un caffè per questo e per l'altro mondo!",
+  "La qualità dell'Uno è quella del cammino che mantiene coesione nella disparità, è la qualità con cui Dio, Eva e Adamo costituiscono la stessa materia, la stessa entità, lo stesso inizio, la stessa totalità.",
+  "Non c'è nulla di più doloroso di ciò che dentro di noi è morto e sepolto.",
+  "Di nero si veste la notte e tu ti vesti da morto.",
+  "Falso sei, ma è tutto palese. Il mutamento si apre alla tua vista.",
+  "Il matto è come un corso d'acqua che segue ogni canale.",
+  "Solido si impone al centro del regno, il suo tepore acquieterà i corpi dei vivi, fino alla noia mortale.",
+  "Sono di solito i grandi della terra a venir sepolti con gli attributi del loro comando, corone d'oro, anelli, scettri, vesti di lamine splendenti.",
+  "Far fagotto, viaggiare e non voltarsi. Che non si faccia come Orfeo con la sua Euridice.",
+  "Squarciato è il cielo, emergiamo dal sonno morti, vivi e risorti.",
+  "Dopo la morte si è trascinati dal carro i cui cavalli si muovono in verticalità opposte. Siamo noi i cocchieri! Sapremo unire legge e giustizia? La direzione presa sarà ricompensa in vita.",
+  "C'è uno spirito sensibile, in ogni albero (i greci le chiamavano amadriadi). Nessun dio lascerà impunito il taglio fatto senza cura e senza necessità.",
+  "Sul tavolo che ci sostiene, due piatti. In uno la piuma, nell'altro il cuore e in mezzo la morte. Avere o dare ragione?",
+  "Le lingue e le idee nell'entusiasmo risuonano folli, e lo sono per davvero; trovare la propria voce non è facile, a volte è importante frenare la lingua, ma di più la mente.",
+  "L'anziano cammina sereno nel buio, avanza all'indietro. La torcia illumina l'evidente, ma il tempo è finito.",
+  "Istruzioni per l'uso: leggere le regole alla base del mondo può coincidere con il produrre forme limpide di sintesi, apparentemente pura razionalità, in realtà è il frutto del corpo dell'uno.",
+  "C'è un ritorno possibile, dal regno dei morti. Per lo più, prende la forma di un racconto, oppure di un raccolto.",
+  "Fluidi alimentano il tuo ventre e sgorgano scintille.",
+  "La memoria inganna solo chi vuol dimenticare.",
+  "Un'opera rotta, spezzata, distrutta, marcita, non muore, si rigenera nella memoria o nel corpo.",
+  "I sensi collassano nell'esplosione del tetto, l'edificio è squarcio, con i testimoni oculisti che tacciono nell'angolo, eppure leggero mi sento di guardare il cobalto nel cielo in fiamme.",
+  "In un giorno luminoso di vento, il racconto gioioso della trasformazione delle nuvole, fino alla loro scomparsa.",
+  "Abbandonati all'amore, donare è il primo dei numeri pari, non si coniuga con l'uno o altri dispari, ma non sono calcoli che si fanno su un unico tempo.",
+  "Accarezza la ferocia ai tuoi piedi, placa la bestia.",
+  "Danziamo nudi con gli elementi del mondo, liberi dalla morte e dalla vita. Siamo il fiore effimero che nasce dall'abisso.",
+  "La gabbia è dorata solo dall'interno.",
+  "Due persone hanno vissuto in te per tutta la vita. Una è egoica e loquace, l'altra vive nell'oblio, la sua voce l'hai ascoltata raramente, ti è però apparsa pacata.",
+  "Germina dalla digestione delle idee, la lotta per la vita non genera conflitti, la rendono unità.",
+  "Comprendere e accogliere il pensiero dell'altro, abbandonare il morso della mente e dei denti sulla carne lacerata. Potrebbe essere la tua.",
+  "Mettiti nelle condizioni di un reale ascolto e alloggia una nuova comprensione dei fenomeni locali.",
+  "Non sono in grado di sopportare da solo l'immagine della morte. La morte è ciò che condividiamo per eccellenza. Ci coglie in momenti diversi ma ci si può preparare insieme, perché essa rappresenta il senso più profondo della nostra condizione comune.",
+  "Gira il mondo gira! Dall'alto della ruota, nel vivere e nel morire, il panorama è magnifico.",
+  "Questa ammirevole resistenza è solo una altissima forma di desistenza: è il tukdam.",
+  "Fermenta il desiderio che infiamma i corpi, sovrasta la vita, ma non scioglie catene: per questo si rimane schiavi del mortal destino?",
+  "Inginocchiati alla riva di un fiume, nella notte stellata un grillo frinisce nell'ombra.",
+  "Si destreggia con la falce e taglia il campo di netto, veloce e silenziosa getta nel pozzo un piccolo piombo. Arriva giù pesante nelle profondità marine dei tuoi sentimenti, collassa sulla tua memoria, è doloroso eppure sei davanti allo scenario infinito di una valle, nel sole ti apre le viscere, levati il cupo minerale con le mani, non aver paura di insozzare.",
+  "Ciò che in vita abbiamo cercato può ora essere opera.",
+  "Ci riveliamo estranei al fianco di chi ci ha generato.",
+  "Che cos'è l'immortalità senza il cammino della morte, cosa i dorati semi senza la terra?",
+  "Stabiliamo connessioni, però libere dagli abituali criteri di consequenzialità.",
+  "Il quarto capitolo della Genesi vede Caino assassinare suo fratello, eppure si era appena divenuti società.",
+  "Quando odi l'altro, l'altro è sempre tuo fratello.",
+  "Scoprire facoltà inaspettate in terreni sconosciuti.",
+  "Fluida apparizione di vita e morte. Occhi vitrei e fiori, appari alla buon'ora, accompagni il cuore in ogni dolore, fino al ristoro.",
+  "Il morente, sull'inizio del finire, vivrà l'esperienza dell'essere consumato dalle fiamme, si vive nel crepitare d'un incendio.",
+  "Essere consapevole, esporre la propria femminilità, radicarsi nella presenza, saper ascoltare per davvero, si può, si deve fare.",
+  "Ogni giorno andiamo lentamente incontro a quello da cui fuggiamo.",
+  "Come Giuseppe Maria Desa volo sui pollai e sogno di tornare a casa, ma non posso. Sorvolo la spiaggia e i pini dell'isola, distinguo dall'alto i santissimi asini che ragliano al cielo la loro distanza da dio, solo non sono, qui si deve solo imparare ad atterrare.",
+  "Apprendiamo nuove lingue, ascoltando (soprattutto ascoltando) e solo dopo dicendo.",
+  "Unire il cosmo e il nano, produrre il senso che dona l'unità fra funzione e inutilità, è lì che si è sempre trovata la bellezza.",
+  "Al fondo di ogni discorso, non c'è una verità, ma un ritmo.",
+  "Si mostra dentro, intorno o fuori di noi la figura di un pedagogo, insopportabile professionista, ebbro di chiarezza e incisività, buono in teoria, brillante nella comunicazione, può essere utile sostanziarlo.",
+  "Se siamo riusciti a passare dalla parola al silenzio, possiamo ora saltare verso l'amore.",
+  "L'entusiasmo di fronte alle idee diviene passione per l'analisi o lo studio. Eppure la mente è immatura, non distingue tra credere e sapere, e credere di sapere. Eppure questi dilemmi sono una trappola, si può fare entrambi?",
+  "Il rimpianto è il pensiero che non si accorda con l'accaduto.",
+  "Il muro dietro i nostri corpi è caldo, il nostro futuro irradia gemme sul nostro passato.",
+  "La negromante trasmuta e fiorisce se lasciamo andare ciò che immobile appare.",
+  "Ciò che amiamo è già stato amato dai nostri genitori.",
+  "Pagheremo dazio con la melanconia, verrà con noi come un feto morto in grembo.",
+  "Afferrato per braccia e gambe, appeso a testa in giù. Guardando il fondale ondeggia e nasce morendo.",
+  "Il seme sepolto nella terra è la genesi della conoscenza, nulla appare mutare eppure tutto è in espansione.",
+  "È giusto seppellire un tesoro? Siamo sicuri che nessuno potrà mai rubare un corpo sotterrato in profondità?",
+  "Non sempre è utile abbandonare un mondo per crearne uno nuovo, possiamo anche infilarlo in un taschino o meglio ancora piantarlo per terra. Innaffialo ogni tanto, basterà.",
+  "La vera devozione è una forma di ricettività non violenta alla verità, è radicata in una sbalordita gratitudine, eppure dona sottili forme di intelligenza e sensibilità.",
+  "Non puoi tornare indietro e non è facile far finta che nulla sia stato, non si muore solo di morte.",
+  "Ancora siamo qui di notte, con le nostre parrucche blu, senza nostalgia o rimpianti. Se è incubo allora siamo vivi.",
+  "Guarda piano il luogo dove il tempo è sospeso, quello in cui qualcosa ancora non è, è lì che il desiderio non si consuma.",
+  "Sai tracciare una linea da te all'orizzonte? È lì che troverai la vita oltre la fine.",
+  "Il cavallo dipinto scompare se l'artiere non usa il nettapiedi, l'odore di sterco rimane dopo la morte, ma la tela bianca profuma di lillà.",
+  "Ora puoi iniziare ad attraversare il fiume che porta nell'altrove.",
+  "Il tuo mondo si consumerà in un olocausto, prima che il vento arrivi e ripulisca tutto dalle ceneri.",
+  "Il figlio assomiglia al padre come alla madre, poi lascia casa e tutto si porta dietro tranne che loro.",
+  "Non è mai dato sapere dentro quale tasca la morte si faccia viva.",
+  "Tutto l'amore del mondo non basta a sfamare la Terra.",
+  "Non si è manifestato ancora ciò che è presente in potenza, attrazione e disgusto sono opposti e parte di un'unità, come il dolore e il godimento. Lo sappiamo bene.",
+  "Sorridi, con leggerezza sorridi.",
+  "Non ci sarebbe alcuna possibilità di conoscere la morte, se accadesse solo una volta.",
+  "Vivere al gerundio. Facendo, non fatto. Passando, non passato. Morendo, non morto.",
+  "Quel che conta non è la forza, ma l'ardire nell'abbandono.",
+  "Il dialogo di una unità verso l'altra ha bisogno della qualità della propria in relazione all'altra, è il potere dell'abbandono nell'atto di fare all'amore.",
+  "Il piede destro segue il piede sinistro ad ogni passo.",
+  "Quando nulla è ancora nato tutto è già avvenuto, eppure ancora tutto è avvenibile.",
+  "La luce che produce l'assenza di rumore di fondo mette in evidenza il silenzio di senso fra i suoni e le parole, vediamo limpidamente l'energia che trascina il pensiero, si deve far più spesso pulizia nella mente.",
+  "All'inizio della fine c'era una siepe, all'inizio dell'amore l'abisso.",
+  "Si sa che ciò che pensiamo può diventare realtà, quello che sogniamo lo è già.",
+  "Non è infinito tutto ciò che può contenere il cuore, oltre un certo spazio procura dolore, diviene oblio, ma dentro quei limiti infinito appare.",
+  "Abbandonati alle risonanze e alla bellezza della genesi delle idee.",
+  "Uscire dal proprio mondo mentale! Il tuo dubbio è fecondo, il bianco o il nero non sono la verità, non è a ragione o a torto che accade ciò che accade per davvero.",
+  "Tacere si deve davanti all'incertezza e l'infanzia dei propri pensieri immaturi.",
+  "L'animale è gemello del consapevole.",
+  "Vi è la possibilità di ospitare l'universo nel potenziale di un piccolo cuore.",
+  "Accoppiamento generativo, abbraccio comunitario, duplicazione in accordo.",
+  "Archetipo, ieratico silenzioso, ti lancio uno sguardo.",
+  "Una sola terra sotto il mare."
+];
+
+/* Jean Dodal, Tarot de Marseille, Lyon 1701-1715
+   Direct upload.wikimedia.org URLs (public domain)
+   Hash paths computed from MD5 of filenames */
+const ARCANA = [
+  "https://upload.wikimedia.org/wikipedia/commons/2/2b/Jean_Dodal_Tarot_trump_Fool.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/e0/Jean_Dodal_Tarot_trump_01.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/9/92/Jean_Dodal_Tarot_trump_02.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/bb/Jean_Dodal_Tarot_trump_03.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/ec/Jean_Dodal_Tarot_trump_04.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/7c/Jean_Dodal_Tarot_trump_05.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/70/Jean_Dodal_Tarot_trump_06.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/be/Jean_Dodal_Tarot_trump_07.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/d/dd/Jean_Dodal_Tarot_trump_08.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/6/69/Jean_Dodal_Tarot_trump_09.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/c/ca/Jean_Dodal_Tarot_trump_10.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/0b/Jean_Dodal_Tarot_trump_11.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/2/29/Jean_Dodal_Tarot_trump_12.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/70/Jean_Dodal_Tarot_trump_13.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/2/27/Jean_Dodal_Tarot_trump_14.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/3/38/Jean_Dodal_Tarot_trump_15.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/03/Jean_Dodal_Tarot_trump_16.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/3/30/Jean_Dodal_Tarot_trump_17.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/5/50/Jean_Dodal_Tarot_trump_18.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/ec/Jean_Dodal_Tarot_trump_19.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/4/40/Jean_Dodal_Tarot_trump_20.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/1/1d/Jean_Dodal_Tarot_trump_21.jpg",
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ── Carousel ── */
+const tarotBg = document.getElementById('tarotBg');
+let deck = shuffle(ARCANA);
+let deckIdx = 0;
+let currentImg = null;
+let carouselTimer = null;
+
+function preload(url) {
+  const img = new Image();
+  img.src = url;
+}
+
+function nextCard() {
+  const next1 = (deckIdx + 1) % deck.length;
+  const next2 = (deckIdx + 2) % deck.length;
+  preload(deck[next1]);
+  preload(deck[next2]);
+
+  const img = document.createElement('img');
+  img.src = deck[deckIdx];
+  img.alt = '';
+  tarotBg.appendChild(img);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      img.classList.add('visible');
+    });
+  });
+
+  if (currentImg) {
+    const old = currentImg;
+    old.classList.remove('visible');
+    old.classList.add('fading');
+    setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 2500);
+  }
+
+  currentImg = img;
+  deckIdx = (deckIdx + 1) % deck.length;
+  if (deckIdx === 0) deck = shuffle(ARCANA);
+
+  carouselTimer = setTimeout(nextCard, 7000);
+}
+
+// Preload first 3 and start
+preload(deck[0]);
+preload(deck[1]);
+preload(deck[2]);
+setTimeout(nextCard, 400);
+
+/* ── Navigation ── */
+const homeScreen = document.getElementById('home');
+const cartaScreen = document.getElementById('carta');
+const msgText = document.getElementById('msgText');
+
+document.getElementById('btnEstrai').addEventListener('click', function() {
+  msgText.textContent = MESSAGGI[Math.floor(Math.random() * MESSAGGI.length)];
+  msgText.classList.remove('visible');
+  homeScreen.classList.remove('active');
+  clearTimeout(carouselTimer);
+  setTimeout(() => {
+    cartaScreen.classList.add('active');
+    setTimeout(() => msgText.classList.add('visible'), 500);
+  }, 600);
+});
+
+document.getElementById('btnTorna').addEventListener('click', function() {
+  cartaScreen.classList.remove('active');
+  msgText.classList.remove('visible');
+  setTimeout(() => {
+    deck = shuffle(ARCANA);
+    deckIdx = 0;
+    while (tarotBg.firstChild) tarotBg.removeChild(tarotBg.firstChild);
+    currentImg = null;
+    setTimeout(nextCard, 300);
+    homeScreen.classList.add('active');
+  }, 600);
+});
+</script>
+</body>
+</html>
