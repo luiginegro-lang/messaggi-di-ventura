@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Messaggi di ventura — la casa cafausica</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 100%; height: 100%; overflow: hidden; background: #0b0b0a; }
@@ -20,53 +20,43 @@
   }
   .screen.active { opacity: 1; pointer-events: auto; }
 
-  #home { cursor: default; }
-
-  .tarot-bg {
-    position: absolute; inset: 0;
-    overflow: hidden;
-  }
+  /* ── TAROT BACKGROUND ── */
+  .tarot-bg { position: absolute; inset: 0; overflow: hidden; }
   .tarot-bg img {
     position: absolute;
-    top: 50%; left: 50%;
-    height: 140%; width: auto;
-    object-fit: contain;
-    filter: grayscale(100%) blur(5px) brightness(0.28) contrast(1.3);
+    top: -20%; left: -20%;
+    width: 140%; height: 140%;
+    object-fit: cover;
+    filter: grayscale(100%) blur(2px) brightness(0.28) contrast(1.3);
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.0);
     transition: none;
   }
   .tarot-bg img.visible {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.15);
-    transition: opacity 2.5s ease-in, transform 8s linear;
+    transition: opacity 2.5s ease-in;
   }
   .tarot-bg img.fading {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.2);
-    transition: opacity 2s ease-out, transform 2s ease-out;
+    transition: opacity 2s ease-out;
   }
-
   .vignette {
     position: absolute; inset: 0;
     background: radial-gradient(ellipse at center, transparent 12%, #0b0b0a 68%);
     pointer-events: none;
   }
-
   .grain {
     position: absolute; inset: 0;
-    opacity: 0.1;
-    pointer-events: none;
-    mix-blend-mode: overlay;
+    opacity: 0.1; pointer-events: none; mix-blend-mode: overlay;
   }
 
+  /* ── HOME ── */
+  #home { cursor: pointer; }
   .home-content {
     position: relative; z-index: 1;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center;
   }
-
   .title {
     color: #f0ece6;
     font-size: clamp(28px, 6vw, 48px);
@@ -76,34 +66,32 @@
     margin-bottom: 20px;
     text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7);
   }
-
   .subtitle {
     color: #706b62;
     font-size: clamp(12px, 2.2vw, 14px);
     letter-spacing: 0.12em;
-    margin-bottom: 10vh;
+    margin-bottom: 12vh;
     text-shadow: 0 1px 15px rgba(0,0,0,0.8);
   }
-
-  .btn-estrai {
-    color: #706b62;
+  .home-nav {
+    position: absolute;
+    bottom: 7vh;
+    z-index: 2;
+  }
+  .nav-link {
+    color: #2a2825;
     font-family: 'Lora', 'Georgia', serif;
-    font-size: clamp(18px, 3.6vw, 24px);
+    font-size: 13px;
     letter-spacing: 0.06em;
     cursor: pointer;
-    padding: 16px 44px;
-    border: 1px solid transparent;
-    background: none;
-    text-shadow: 0 1px 15px rgba(0,0,0,0.8);
-    transition: all 0.5s ease;
+    background: none; border: none;
+    transition: color 0.4s;
+    user-select: none;
   }
-  .btn-estrai:hover {
-    color: #f0ece6;
-    border-color: #363330;
-  }
+  .nav-link:hover { color: #706b62; }
 
+  /* ── CARTA ── */
   #carta { background: #0b0b0a; }
-
   .messaggio {
     color: #f0ece6;
     font-size: clamp(19px, 4vw, 28px);
@@ -116,29 +104,93 @@
     transform: translateY(14px);
     transition: opacity 2s ease, transform 2s ease;
   }
-  .messaggio.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .messaggio.visible { opacity: 1; transform: translateY(0); }
 
-  .btn-torna {
-    position: absolute;
-    bottom: 8vh;
-    color: #363330;
+  /* ── INFO ── */
+  #info {
+    background: #0b0b0a;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10vh 8vw 14vh;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .info-inner {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .info-title {
+    color: #f0ece6;
+    font-size: clamp(22px, 4.5vw, 34px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+  .info-sep {
+    width: 30px;
+    height: 1px;
+    background: #2a2825;
+    margin: 40px 0;
+  }
+  .info-epigraph {
+    color: #807a70;
+    font-size: clamp(14px, 2.8vw, 17px);
+    font-style: italic;
+    line-height: 1.75;
+  }
+  .info-epigraph-author {
+    color: #4a4640;
+    font-size: clamp(12px, 2.2vw, 14px);
+    margin-top: 10px;
+  }
+  .info-body {
+    color: #a09a90;
+    font-size: clamp(14px, 2.8vw, 17px);
+    line-height: 1.85;
+  }
+  .info-body + .info-body { margin-top: 20px; }
+  .info-body-link {
+    color: #807a70;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .info-body-link:hover { color: #a09a90; }
+  .info-foot {
+    color: #3a3530;
+    font-size: clamp(11px, 1.8vw, 12px);
+    letter-spacing: 0.03em;
+  }
+  .info-foot a {
+    color: #3a3530;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .info-foot a:hover { color: #706b62; }
+
+  /* ── BOTTOM NAV ── */
+  .btn-back {
+    position: fixed;
+    bottom: 7vh;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #2a2825;
     font-family: 'Lora', 'Georgia', serif;
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: 0.06em;
     cursor: pointer;
-    background: none;
-    border: none;
+    background: none; border: none;
     transition: color 0.4s;
     user-select: none;
+    z-index: 10;
   }
-  .btn-torna:hover { color: #706b62; }
+  .btn-back:hover { color: #706b62; }
 </style>
 </head>
 <body>
 
+<!-- ════ HOME ════ -->
 <div id="home" class="screen active">
   <div class="tarot-bg" id="tarotBg"></div>
   <div class="vignette"></div>
@@ -146,16 +198,55 @@
     <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch"/></filter>
     <rect width="100%" height="100%" filter="url(#grain)"/>
   </svg>
-  <div class="home-content">
+  <div class="home-content" id="homeTouch">
     <div class="title">Messaggi di ventura</div>
     <div class="subtitle">la casa cafausica</div>
-    <button class="btn-estrai" id="btnEstrai">estrai</button>
+  </div>
+  <div class="home-nav">
+    <button class="nav-link" id="btnInfo">nota</button>
   </div>
 </div>
 
+<!-- ════ CARTA ════ -->
 <div id="carta" class="screen">
   <div class="messaggio" id="msgText"></div>
-  <button class="btn-torna" id="btnTorna">torna</button>
+  <button class="btn-back" id="btnTorna">torna</button>
+</div>
+
+<!-- ════ INFO ════ -->
+<div id="info" class="screen">
+  <div class="info-inner">
+
+    <div class="info-title">Messaggi di ventura</div>
+
+    <div class="info-sep"></div>
+
+    <div class="info-epigraph">Nessun mortale sa capire che muore e guardare la morte. Bisogna che corra, che pensi, che dica. Che parli a quelli che rimangono.</div>
+    <div class="info-epigraph-author">Cesare Pavese, <em>Dialoghi con Leucò</em></div>
+
+    <div class="info-sep"></div>
+
+    <div class="info-body">Queste frasi sono tratte dal libro omonimo che si ispira a un'idea nata per l'edizione de La festa dei vivi (che riflettono sulla morte) del 2021, mai realizzata a causa della pandemia. Il libro è stato pubblicato da la casa cafausica nell'ottobre 2022. <a href="https://amzn.eu/d/09ujkIh3" target="_blank" rel="noopener" class="info-body-link">Acquista il libro</a></div>
+
+    <div class="info-body">Alcune di queste risultano essere una scomposizione di significati riferiti alle questioni sollevate nel tempo dal gruppo de Lu Cafausu sul vivere e morire, altre emergono da una libera lettura delle carte dei tarocchi. In riferimento a queste ultime sono state prese in considerazione sia gli arcani maggiori che una selezione dei minori, più connessi alle tematiche celebrate nella Festa dei vivi (che riflettono sulla morte).</div>
+
+    <div class="info-body">Le frasi contenute in questa pubblicazione possono essere usate liberamente per degli esercizi o degli esperimenti di divinazione; ognuno può decidere il proprio metodo di utilizzo delle stesse. Sono particolarmente gradite personalizzazioni e cure individuali del libro: ad esempio mettere una sovracopertina, schiacciare tra le pagine dei fiori o altre forme vegetali lasciandole seccare, scrivere nuove frasi su pagine aggiunte o su pagine vuote.</div>
+
+    <div class="info-sep"></div>
+
+    <div class="info-body">Lu Cafausu è il nome scelto da un collettivo di artisti, ma anche un luogo reale, una piccola coffee house in pietra leccese sita a San Cesario di Lecce. Collocata alla fine di quello che era il parco di una villa di inizio novecento ora completamente scomparsa, è invece al centro di un quartiere di palazzine e condomini che si è andato a costruire dalla fine degli anni novanta. Per le sue particolari condizioni Lu Cafausu è divenuto metafora e fonte di ispirazione per storie, performance, rituali, pellegrinaggi e azioni nel paese di San Cesario e in diverse città europee e americane, simbolo di qualcosa che è, allo stesso tempo, sia centrale che marginale, dove le contraddizioni estetiche incontrano il senso (o la mancanza di senso) del nostro tempo. Una cappella di desistenza, di fragilità e nello stesso tempo di potere. Un luogo immaginario che esiste per davvero.</div>
+
+    <div class="info-body">La festa dei vivi (che riflettono sulla morte) è una celebrazione che coincide con il 2 novembre, un progetto collaborativo di Lu Cafausu che richiama, da molti anni, artisti da tutto il mondo a elaborare una riflessione sulla morte come trasformazione, soglia, mistero, ma anche come necessario orizzonte di senso. In varie parti del mondo, all'inizio di novembre le persone celebrano i defunti, e questo avviene sia ricordando chi non c'è più, pregando, che visitando i luoghi di sepoltura. In un modo o nell'altro tutti cerchiamo di stabilire un contatto coi nostri cari che non ci sono più, e spesso questo accade considerando il nostro comune destino, ovvero riflettendo sulla morte in generale. Fin dall'inizio Lu Cafausu ha dato vita a uno spazio immaginario dove pensieri, analogie e coincidenze hanno cercato di trovare eco nelle voci e nelle immagini interiori suscitate dall'incontro con i defunti o dalla coscienza del destino dei viventi attraverso varie modalità di pratiche, di riflessione o di meditazione che possano creare uno spazio fra la vita e la morte, fra i defunti e i mortali. La consapevolezza del comune e ineluttabile destino può creare forme di incontro e di sensibilità fra i partecipanti alla festa, chiunque essi siano.</div>
+
+    <div class="info-sep"></div>
+
+    <div class="info-foot">
+      ISBN 979-8-3583-1869-4<br>
+      <a href="https://www.lacolemon.org" target="_blank" rel="noopener">www.lacolemon.org</a>
+    </div>
+
+  </div>
+  <button class="btn-back" id="btnInfoBack">torna</button>
 </div>
 
 <script>
@@ -272,9 +363,7 @@ const MESSAGGI = [
   "Una sola terra sotto il mare."
 ];
 
-/* Jean Dodal, Tarot de Marseille, Lyon 1701-1715
-   Direct upload.wikimedia.org URLs (public domain)
-   Hash paths computed from MD5 of filenames */
+/* Jean Dodal, Tarot de Marseille, Lyon 1701-1715 — public domain */
 const ARCANA = [
   "https://upload.wikimedia.org/wikipedia/commons/2/2b/Jean_Dodal_Tarot_trump_Fool.jpg",
   "https://upload.wikimedia.org/wikipedia/commons/e/e0/Jean_Dodal_Tarot_trump_01.jpg",
@@ -309,61 +398,80 @@ function shuffle(arr) {
   return a;
 }
 
-/* ── Carousel ── */
+const DEATH_INDEX = 13; /* La Mort — always first */
+
 const tarotBg = document.getElementById('tarotBg');
-let deck = shuffle(ARCANA);
+let deck = [];
 let deckIdx = 0;
 let currentImg = null;
 let carouselTimer = null;
 
-function preload(url) {
-  const img = new Image();
-  img.src = url;
+function buildDeck() {
+  /* Death first, then the rest shuffled */
+  const rest = ARCANA.filter((_, i) => i !== DEATH_INDEX);
+  const shuffled = shuffle(rest);
+  return [ARCANA[DEATH_INDEX], ...shuffled];
+}
+
+function preload(url) { const img = new Image(); img.src = url; }
+
+/* Random pan: pick a start and end position within the 40% overflow */
+function randomPan() {
+  const range = 20; /* max % offset in any direction */
+  const sx = -range + Math.random() * range * 2;
+  const sy = -range + Math.random() * range * 2;
+  let ex = -range + Math.random() * range * 2;
+  let ey = -range + Math.random() * range * 2;
+  /* ensure minimum travel distance */
+  while (Math.abs(ex - sx) + Math.abs(ey - sy) < 12) {
+    ex = -range + Math.random() * range * 2;
+    ey = -range + Math.random() * range * 2;
+  }
+  return { sx, sy, ex, ey };
 }
 
 function nextCard() {
-  const next1 = (deckIdx + 1) % deck.length;
-  const next2 = (deckIdx + 2) % deck.length;
-  preload(deck[next1]);
-  preload(deck[next2]);
-
+  preload(deck[(deckIdx + 1) % deck.length]);
+  preload(deck[(deckIdx + 2) % deck.length]);
   const img = document.createElement('img');
-  img.src = deck[deckIdx];
-  img.alt = '';
+  img.src = deck[deckIdx]; img.alt = '';
+
+  const pan = randomPan();
+  img.style.top = pan.sy + '%';
+  img.style.left = pan.sx + '%';
+  img.style.transition = 'none';
+
   tarotBg.appendChild(img);
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      img.classList.add('visible');
-    });
-  });
+  requestAnimationFrame(() => { requestAnimationFrame(() => {
+    img.classList.add('visible');
+    /* start slow pan */
+    img.style.transition = 'opacity 2.5s ease-in, top 9s ease-in-out, left 9s ease-in-out';
+    img.style.top = pan.ey + '%';
+    img.style.left = pan.ex + '%';
+  }); });
 
   if (currentImg) {
     const old = currentImg;
-    old.classList.remove('visible');
-    old.classList.add('fading');
+    old.classList.remove('visible'); old.classList.add('fading');
     setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 2500);
   }
-
   currentImg = img;
   deckIdx = (deckIdx + 1) % deck.length;
-  if (deckIdx === 0) deck = shuffle(ARCANA);
-
-  carouselTimer = setTimeout(nextCard, 7000);
+  if (deckIdx === 0) deck = buildDeck();
+  carouselTimer = setTimeout(nextCard, 8000);
 }
 
-// Preload first 3 and start
-preload(deck[0]);
-preload(deck[1]);
-preload(deck[2]);
+deck = buildDeck();
+preload(deck[0]); preload(deck[1]); preload(deck[2]);
 setTimeout(nextCard, 400);
 
-/* ── Navigation ── */
 const homeScreen = document.getElementById('home');
 const cartaScreen = document.getElementById('carta');
+const infoScreen = document.getElementById('info');
 const msgText = document.getElementById('msgText');
 
-document.getElementById('btnEstrai').addEventListener('click', function() {
+function showCarta() {
   msgText.textContent = MESSAGGI[Math.floor(Math.random() * MESSAGGI.length)];
   msgText.classList.remove('visible');
   homeScreen.classList.remove('active');
@@ -372,20 +480,35 @@ document.getElementById('btnEstrai').addEventListener('click', function() {
     cartaScreen.classList.add('active');
     setTimeout(() => msgText.classList.add('visible'), 500);
   }, 600);
-});
+}
 
-document.getElementById('btnTorna').addEventListener('click', function() {
+function showHome() {
   cartaScreen.classList.remove('active');
+  infoScreen.classList.remove('active');
   msgText.classList.remove('visible');
   setTimeout(() => {
-    deck = shuffle(ARCANA);
+    deck = buildDeck();
     deckIdx = 0;
     while (tarotBg.firstChild) tarotBg.removeChild(tarotBg.firstChild);
     currentImg = null;
     setTimeout(nextCard, 300);
     homeScreen.classList.add('active');
   }, 600);
-});
+}
+
+function showInfo() {
+  homeScreen.classList.remove('active');
+  clearTimeout(carouselTimer);
+  setTimeout(() => {
+    infoScreen.scrollTop = 0;
+    infoScreen.classList.add('active');
+  }, 600);
+}
+
+document.getElementById('homeTouch').addEventListener('click', showCarta);
+document.getElementById('btnInfo').addEventListener('click', function(e) { e.stopPropagation(); showInfo(); });
+document.getElementById('btnTorna').addEventListener('click', showHome);
+document.getElementById('btnInfoBack').addEventListener('click', showHome);
 </script>
 </body>
 </html>
