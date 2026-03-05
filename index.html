@@ -105,6 +105,9 @@
     position: absolute;
     bottom: 7vh;
     z-index: 2;
+    display: flex;
+    gap: 30px;
+    align-items: center;
   }
   .nav-link {
     color: #8b2252;
@@ -117,6 +120,15 @@
     user-select: none;
   }
   .nav-link:hover { color: #a52a6a; }
+  .lang-link {
+    color: #706b62;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .lang-link:hover { color: #a09a90; }
 
   /* ── RESPIRA ── */
   #respira { background: #0b0b0a; }
@@ -270,6 +282,7 @@
   </div>
   <div class="home-nav">
     <button class="nav-link" id="btnInfo">nota</button>
+    <a href="en.html" class="lang-link">eng</a>
   </div>
 </div>
 

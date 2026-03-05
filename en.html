@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Messages of Fortune — la casa cafausica</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0b0b0a; }
+  body { font-family: 'Lora', 'Georgia', serif; }
+
+  .screen {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+  .screen.active { opacity: 1; pointer-events: auto; }
+
+  .tarot-bg { position: absolute; inset: 0; overflow: hidden; }
+  .tarot-bg img {
+    position: absolute;
+    top: -20%; left: -20%;
+    width: 140%; height: 140%;
+    object-fit: cover;
+    filter: grayscale(100%) blur(2px) brightness(0.28) contrast(1.3);
+    opacity: 0;
+    transition: none;
+  }
+  .tarot-bg img.visible {
+    opacity: 1;
+    transition: opacity 2.5s ease-in;
+  }
+  .tarot-bg img.fading {
+    opacity: 0;
+    transition: opacity 2s ease-out;
+  }
+  .vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 12%, #0b0b0a 68%);
+    pointer-events: none;
+  }
+  .grain {
+    position: absolute; inset: 0;
+    opacity: 0.1; pointer-events: none; mix-blend-mode: overlay;
+  }
+
+  #home { cursor: default; }
+  .home-content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .title {
+    color: #f0ece6;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7);
+  }
+  .dot-wrap {
+    cursor: pointer;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #8b2252;
+    box-shadow: 0 0 12px rgba(139,34,82,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .dot-wrap:hover .dot {
+    transform: scale(1.3);
+    box-shadow: 0 0 20px rgba(139,34,82,0.7);
+  }
+  .subtitle-line {
+    text-align: center;
+    font-size: clamp(12px, 2.2vw, 14px);
+    letter-spacing: 0.12em;
+    color: #706b62;
+    text-shadow: 0 1px 15px rgba(0,0,0,0.8);
+  }
+  .subtitle-link {
+    color: #706b62;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: clamp(12px, 2.2vw, 14px);
+    letter-spacing: 0.12em;
+    text-shadow: 0 1px 15px rgba(0,0,0,0.8);
+    text-decoration: none;
+    transition: color 0.4s;
+  }
+  .subtitle-link:hover { color: #a09a90; }
+  .home-nav {
+    position: absolute;
+    bottom: 7vh;
+    z-index: 2;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+  .nav-link {
+    color: #8b2252;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    background: none; border: none;
+    transition: color 0.4s;
+    user-select: none;
+  }
+  .nav-link:hover { color: #a52a6a; }
+  .lang-link {
+    color: #706b62;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .lang-link:hover { color: #a09a90; }
+
+  /* ── RESPIRA ── */
+  #respira { background: #0b0b0a; }
+  .respira-text {
+    color: #706b62;
+    font-size: clamp(18px, 3.5vw, 24px);
+    font-style: italic;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .respira-text.visible { opacity: 1; }
+  .respira-text.hidden { opacity: 0; transition: opacity 0.6s ease; }
+  .domanda-wrap {
+    position: absolute;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+  }
+  .domanda-wrap.visible { opacity: 1; pointer-events: auto; }
+  .domanda-text {
+    color: #a09a90;
+    font-size: clamp(16px, 3.2vw, 22px);
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+  .dot-pulse {
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(139,34,82,0.5); }
+    50% { transform: scale(1.4); box-shadow: 0 0 24px rgba(139,34,82,0.8); }
+  }
+
+  /* ── CARTA ── */
+  #carta { background: #0b0b0a; }
+  .messaggio {
+    color: #f0ece6;
+    font-size: clamp(19px, 4vw, 28px);
+    font-weight: 400;
+    line-height: 1.75;
+    text-align: center;
+    max-width: 580px;
+    padding: 0 8vw;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 2s ease, transform 2s ease;
+  }
+  .messaggio.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── INFO ── */
+  #info {
+    background: #0b0b0a;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10vh 8vw 14vh;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .info-inner {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .info-title {
+    color: #f0ece6;
+    font-size: clamp(22px, 4.5vw, 34px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+  .info-sep {
+    width: 30px;
+    height: 1px;
+    background: #2a2825;
+    margin: 40px 0;
+  }
+  .info-epigraph {
+    color: #807a70;
+    font-size: clamp(14px, 2.8vw, 17px);
+    font-style: italic;
+    line-height: 1.75;
+  }
+  .info-epigraph-author {
+    color: #4a4640;
+    font-size: clamp(12px, 2.2vw, 14px);
+    margin-top: 10px;
+  }
+  .info-body {
+    color: #a09a90;
+    font-size: clamp(14px, 2.8vw, 17px);
+    line-height: 1.85;
+  }
+  .info-body + .info-body { margin-top: 20px; }
+  .info-body-link {
+    color: #8b2252;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .info-body-link:hover { color: #a52a6a; }
+  .info-foot {
+    color: #3a3530;
+    font-size: clamp(11px, 1.8vw, 12px);
+    letter-spacing: 0.03em;
+  }
+  .info-foot a {
+    color: #8b2252;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .info-foot a:hover { color: #a52a6a; }
+
+  .btn-back {
+    position: fixed;
+    bottom: 7vh;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #8b2252;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    background: none; border: none;
+    transition: color 0.4s;
+    user-select: none;
+    z-index: 10;
+  }
+  .btn-back:hover { color: #a52a6a; }
+</style>
+</head>
+<body>
+
+<!-- ════ HOME ════ -->
+<div id="home" class="screen active">
+  <div class="tarot-bg" id="tarotBg"></div>
+  <div class="vignette"></div>
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg">
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch"/></filter>
+    <rect width="100%" height="100%" filter="url(#grain)"/>
+  </svg>
+  <div class="home-content">
+    <div class="title" id="btnTitle" style="cursor:pointer;">Messages of Fortune</div>
+    <div class="dot-wrap" id="btnDot"><div class="dot"></div></div>
+    <div class="subtitle-line"><a href="https://lucafausu.wordpress.com/" target="_blank" rel="noopener" class="subtitle-link">Lu Cafausu</a> / <a href="https://www.instagram.com/lac.o.le.mon/?hl=en" target="_blank" rel="noopener" class="subtitle-link">The Feast of the Living</a></div>
+    <div class="subtitle-line" style="margin-bottom:12vh;"><a href="https://www.instagram.com/lac.o.le.mon/?hl=en" target="_blank" rel="noopener" class="subtitle-link">(who reflect upon death)</a></div>
+  </div>
+  <div class="home-nav">
+    <button class="nav-link" id="btnInfo">note</button>
+    <a href="index.html" class="lang-link">ita</a>
+  </div>
+</div>
+
+<!-- ════ CARTA ════ -->
+<div id="carta" class="screen">
+  <div class="messaggio" id="msgText"></div>
+  <button class="btn-back" id="btnTorna">return</button>
+</div>
+
+<!-- ════ RESPIRA ════ -->
+<div id="respira" class="screen">
+  <div class="respira-text" id="respiraText">breathe...</div>
+  <div class="domanda-wrap" id="domandaWrap">
+    <div class="domanda-text">Pose an existential question.<br>Do not seek an answer.<br>Let it surface.</div>
+    <div class="dot-wrap" id="btnDotRespira"><div class="dot dot-pulse"></div></div>
+  </div>
+</div>
+
+<!-- ════ INFO ════ -->
+<div id="info" class="screen">
+  <div class="info-inner">
+
+    <div class="info-title">Messages of Fortune</div>
+
+    <div class="info-sep"></div>
+
+    <div class="info-epigraph">No mortal can grasp that he is dying, and look death in the face. He must run, must think, must speak. Must speak to those who remain.</div>
+    <div class="info-epigraph-author">Cesare Pavese, <em>Dialogues with Leucò</em></div>
+
+    <div class="info-sep"></div>
+
+    <div class="info-body">These phrases are drawn from the book of the same name, inspired by an idea born for the 2021 edition of The Feast of the Living (who reflect upon death), never realised due to the pandemic. The book was published by la casa cafausica in October 2022, with texts by Lu Cafausu — Giancarlo Norese, Luigi Negro, Luigi Presicce, Emilio Fantin, Cesare Pietroiusti — and made possible through the collaboration of Maria V. Tarantino, scholar of the tarot and tarologist. <a href="https://amzn.eu/d/09ujkIh3" target="_blank" rel="noopener" class="info-body-link">Buy the book</a></div>
+
+    <div class="info-body">Some of these phrases are a decomposition of meanings related to the questions raised over time by the Lu Cafausu group on the subjects of living and dying; others emerge from a free reading of the tarot cards. With regard to the latter, both the major arcana and a selection of the minor arcana more closely connected to the themes celebrated in The Feast of the Living (who reflect upon death) have been taken into consideration.</div>
+
+    <div class="info-body">The phrases contained in this publication may be freely used for exercises or experiments in divination; each person may decide their own method of use. Personalisation and individual care of the book are especially welcome: for instance, adding a dust jacket, pressing flowers or other plant forms between the pages and letting them dry, writing new phrases on added pages or on blank ones.</div>
+
+    <div class="info-sep"></div>
+
+    <div class="info-body">Lu Cafausu is the name chosen by a collective of artists, but also a real place: a small coffee house in Lecce stone, situated in San Cesario di Lecce. Located at the end of what was once the park of a villa from the early twentieth century — now completely vanished — it sits instead at the centre of a neighbourhood of apartment blocks and condominiums built from the late 1990s onward. Due to its particular conditions, Lu Cafausu has become metaphor and source of inspiration for stories, performances, rituals, pilgrimages, and actions in the town of San Cesario and in various European and American cities — symbol of something that is, at one and the same time, both central and marginal, where aesthetic contradictions meet the sense (or the senselessness) of our time. A chapel of desistance, of fragility, and at the same time of power. An imaginary place that truly exists.</div>
+
+    <div class="info-body">The Feast of the Living (who reflect upon death) is a celebration coinciding with November 2nd, a collaborative project by Lu Cafausu that has for many years called upon artists from around the world to elaborate a reflection on death as transformation, threshold, mystery, but also as a necessary horizon of meaning. In various parts of the world, at the beginning of November, people celebrate the departed — by remembering those who are no longer here, by praying, by visiting places of burial. In one way or another, we all try to establish contact with our loved ones who are gone, and this often happens by considering our common destiny — that is, by reflecting on death in general. From the outset, Lu Cafausu has given life to an imaginary space where thoughts, analogies, and coincidences have sought to find echo in the voices and inner images aroused by the encounter with the dead, or by the awareness of the destiny of the living, through various modes of practice, reflection, or meditation that may create a space between life and death, between the departed and the mortals. The awareness of our common and ineluctable destiny can create forms of encounter and sensitivity among the participants in the feast, whoever they may be.</div>
+
+    <div class="info-sep"></div>
+
+    <div class="info-foot">
+      ISBN 979-8-3583-1869-4<br>
+      <a href="https://www.lacolemon.org" target="_blank" rel="noopener">www.lacolemon.org</a>
+    </div>
+
+  </div>
+  <button class="btn-back" id="btnInfoBack">return</button>
+</div>
+
+<script>
+const MESSAGGI = [
+  "The instruments are on the table: cups, knives, coins and dice, the scalpels in his hands. The surgeon is blind.",
+  "All the cards are to be played.",
+  "At the crossroads we are torment, we halt building upon sand — it would suffice to question ourselves; the spring is clear, it shows us the way.",
+  "The words that voice the lament for death and the longing for what never came to pass are the first poetry.",
+  "The tower fell, a hundred thousand nobodies perished, one was saved.",
+  "The spring gushes from the roof of the world, falls back, flows on in the riverbed, rises through celestial gutters. As above, so below.",
+  "Silence is the sacred, before the human word. Defiance, profanation, re-creation.",
+  "The awareness and the capacity to transcend the two breaths, the amorous or warring dualities, is the gesture of art, of genesis, of reproduction, of being other than oneself.",
+  "She who holds in her hands the text of the Moons, she cloaks us — rest upon her lap and you will hear Hades.",
+  "We dreamt the pepper trees and they were alive, in the dream they swayed in the autumn breeze. In an instant everything changed, the wind devoured them and we counted the shreds over the days: they were seventy-eight, and we understood there is no escape when what you dream follows life.",
+  "Never give a sword to a man who cannot dance.",
+  "We have carried our dead — in walks and processions, on buses and boats, through streets, into palaces and abandoned buildings.",
+  "I sever the stem, the tail falls slack, I mint the coin and draw the blades.",
+  "The tongue hangs loose, the mule goes past, the arse gapes wide, the rod is cast, the curtains close at last.",
+  "The king whistles and she meddles, the fool arrives, I'm full of welts — unshielded runs the craving of the maddened moon.",
+  "The woman reigns, spring erupts, life regenerates from what lies buried.",
+  "A coffee for this world and the next!",
+  "The quality of the One is that of the path which holds cohesion within disparity — the quality by which God, Eve, and Adam constitute the same matter, the same entity, the same beginning, the same totality.",
+  "There is nothing more painful than what has died and been buried within us.",
+  "In black the night dresses, and you dress as the dead.",
+  "False you are, yet all is plain. Transformation opens before your eyes.",
+  "The fool is like a watercourse that follows every channel.",
+  "Solid, he imposes himself at the centre of the kingdom; his warmth will still the bodies of the living, unto mortal tedium.",
+  "It is usually the great ones of the earth who are buried with the attributes of their command — golden crowns, rings, sceptres, garments of gleaming foil.",
+  "Pack up, travel, and do not look back. Let us not do as Orpheus did with his Eurydice.",
+  "Rent is the sky — we emerge from sleep: dead, alive, and risen.",
+  "After death we are dragged by the chariot whose horses move in opposing verticalities. We are the charioteers! Shall we unite law and justice? The direction taken will be our reward in life.",
+  "There is a sentient spirit in every tree (the Greeks called them hamadryads). No god will leave unpunished a cut made without care and without necessity.",
+  "On the table that sustains us, two plates. In one the feather, in the other the heart, and between them death. To be right, or to concede?",
+  "Tongues and ideas resound in enthusiasm, foolish — and truly they are; finding one's own voice is not easy. At times it is important to rein in the tongue, but more so the mind.",
+  "The old man walks serene in the dark, advancing backwards. The torch illuminates the obvious, but time is spent.",
+  "Instructions for use: to read the rules at the foundation of the world may coincide with producing limpid forms of synthesis — apparently pure rationality, in truth the fruit of the body of the one.",
+  "There is a possible return from the kingdom of the dead. Mostly, it takes the form of a tale, or else of a harvest.",
+  "Fluids feed your womb and sparks gush forth.",
+  "Memory deceives only those who wish to forget.",
+  "A work broken, shattered, destroyed, decayed, does not die — it regenerates in memory or in the body.",
+  "The senses collapse in the explosion of the roof, the building is a gash, the eye-witness opticians fall silent in the corner — and yet I feel light enough to gaze at the cobalt in the burning sky.",
+  "On a luminous day of wind, the joyous tale of the transformation of clouds, until their vanishing.",
+  "Surrender to love — giving is the first of the even numbers, it does not conjugate with the one or other odds, but these are not calculations made upon a single time.",
+  "Caress the ferocity at your feet, calm the beast.",
+  "We dance naked with the elements of the world, free from death and from life. We are the ephemeral flower born from the abyss.",
+  "The cage is gilded only from within.",
+  "Two persons have lived in you all your life. One is egoic and loquacious; the other dwells in oblivion — you have rarely heard her voice, yet she appeared to you serene.",
+  "It germinates from the digestion of ideas — the struggle for life does not generate conflicts, it renders them unity.",
+  "To understand and welcome the thought of the other, to abandon the bite of mind and teeth upon torn flesh. It could be yours.",
+  "Place yourself in the condition of true listening, and harbour a new understanding of local phenomena.",
+  "I am unable to bear the image of death alone. Death is what we share above all else. It seizes us at different times, yet we can prepare together, for it represents the deepest meaning of our common condition.",
+  "Turn, world, turn! From the top of the wheel, in living and in dying, the view is magnificent.",
+  "This admirable resistance is merely the highest form of desistance: it is tukdam.",
+  "Desire ferments, inflaming bodies, it towers over life yet does not loose the chains: is this why we remain slaves to mortal fate?",
+  "Kneeling at the bank of a river, in the starlit night a cricket chirps in the shadow.",
+  "She wields the sickle and cuts the field clean — swift and silent she casts a small lead into the well. It falls heavy into the marine depths of your feelings, collapses upon your memory. It is painful, and yet you stand before the infinite vista of a valley; in the sun she opens your entrails — pull the dark mineral out with your hands, do not fear soiling yourself.",
+  "What we sought in life can now become the work.",
+  "We reveal ourselves as strangers beside those who begot us.",
+  "What is immortality without the passage of death, what are the golden seeds without the earth?",
+  "We establish connections, yet free from the habitual criteria of consequentiality.",
+  "The fourth chapter of Genesis sees Cain murder his brother — and yet we had only just become a society.",
+  "When you hate the other, the other is always your brother.",
+  "To discover unexpected faculties in unknown terrain.",
+  "Fluid apparition of life and death. Vitreous eyes and flowers — you appear in good time, you accompany the heart through every sorrow, unto solace.",
+  "The dying one, upon the threshold of the end, will live the experience of being consumed by flames — one lives in the crackling of a fire.",
+  "To be aware, to bare one's femininity, to root oneself in presence, to truly know how to listen — it can be done, it must be done.",
+  "Every day we slowly walk toward that from which we flee.",
+  "Like Giuseppe Maria Desa I fly over the rooftops and dream of returning home, but I cannot. I soar over the beach and the pines of the island, I make out from above the most holy donkeys braying at the sky their distance from God — alone I am not; here one need only learn how to land.",
+  "We learn new tongues by listening — above all by listening — and only then by speaking.",
+  "To unite the cosmos and the dwarf, to produce the meaning that bestows unity between function and futility — there is where beauty has always been found.",
+  "At the bottom of every discourse there is not a truth, but a rhythm.",
+  "Within, around, or outside us appears the figure of a pedagogue — insufferable professional, drunk on clarity and incisiveness, sound in theory, brilliant in communication; it may be worth giving him substance.",
+  "If we have managed to pass from word to silence, we can now leap toward love.",
+  "The enthusiasm before ideas becomes passion for analysis or study. Yet the mind is immature — it does not distinguish between believing and knowing, and believing one knows. Yet these dilemmas are a trap: can one do both?",
+  "Regret is the thought that fails to accord with what has occurred.",
+  "The wall behind our bodies is warm; our future radiates gems upon our past.",
+  "The necromancer transmutes and blooms if we release what appears immobile.",
+  "What we love has already been loved by our parents.",
+  "We shall pay our toll in melancholy — it will come with us like a dead foetus in the womb.",
+  "Seized by arms and legs, hung head downward. Gazing below, the seabed sways — and one is born by dying.",
+  "The seed buried in the earth is the genesis of knowledge — nothing appears to change, yet everything is in expansion.",
+  "Is it right to bury a treasure? Are we certain no one will ever steal a body interred in the depths?",
+  "It is not always useful to abandon a world in order to create a new one — we might also slip it into a breast pocket, or better still, plant it in the ground. Water it now and then; that will suffice.",
+  "True devotion is a form of nonviolent receptivity to truth, rooted in astonished gratitude, and yet it bestows subtle forms of intelligence and sensitivity.",
+  "You cannot turn back, and it is not easy to pretend that nothing has been — one does not die of death alone.",
+  "Still we are here at night, in our blue wigs, without nostalgia or regret. If it is a nightmare, then we are alive.",
+  "Look slowly at the place where time is suspended, where something is not yet — it is there that desire does not consume itself.",
+  "Can you trace a line from yourself to the horizon? It is there you will find life beyond the end.",
+  "The painted horse vanishes if the farrier neglects the hoof pick; the smell of dung lingers after death, yet the blank canvas smells of lilac.",
+  "Now you may begin to cross the river that leads to the elsewhere.",
+  "Your world will be consumed in a holocaust, before the wind arrives and sweeps everything clean of ash.",
+  "The son resembles the father as much as the mother, then leaves home and carries everything with him — except them.",
+  "It is never given to know in which pocket death makes itself felt.",
+  "All the love in the world is not enough to feed the Earth.",
+  "What is present in potency has not yet manifested — attraction and disgust are opposites and part of a unity, like pain and pleasure. We know this well.",
+  "Smile — with lightness, smile.",
+  "There would be no possibility of knowing death, if it happened only once.",
+  "To live in the gerund. Doing, not done. Passing, not passed. Dying, not dead.",
+  "What matters is not strength, but daring in surrender.",
+  "The dialogue from one unity toward another requires the quality of one's own in relation to the other — it is the power of surrender in the act of making love.",
+  "The right foot follows the left at every step.",
+  "When nothing has yet been born, everything has already occurred — and yet everything remains to come.",
+  "The light that produces the absence of background noise brings into relief the silence of meaning between sounds and words — we see clearly the energy that drags thought along; one must clean the mind more often.",
+  "At the beginning of the end there was a hedge; at the beginning of love, the abyss.",
+  "It is known that what we think can become reality; what we dream already is.",
+  "Not all that the heart can contain is infinite — beyond a certain space it brings pain, becomes oblivion; yet within those bounds, infinite it appears.",
+  "Surrender to the resonances and the beauty of the genesis of ideas.",
+  "Step out of your own mental world! Your doubt is fertile — white or black are not the truth; it is not by right or wrong that what truly happens, happens.",
+  "One must fall silent before the uncertainty and the infancy of one's immature thoughts.",
+  "The animal is twin to the aware.",
+  "There exists the possibility of hosting the universe within the potential of a small heart.",
+  "Generative coupling, communal embrace, duplication in accord.",
+  "Archetype, silent hieratic — I cast you a glance.",
+  "A single earth beneath the sea."
+];
+
+/* Jean Dodal, Tarot de Marseille, Lyon 1701-1715 — public domain */
+const ARCANA = [
+  "https://upload.wikimedia.org/wikipedia/commons/2/2b/Jean_Dodal_Tarot_trump_Fool.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/e0/Jean_Dodal_Tarot_trump_01.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/9/92/Jean_Dodal_Tarot_trump_02.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/bb/Jean_Dodal_Tarot_trump_03.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/ec/Jean_Dodal_Tarot_trump_04.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/7c/Jean_Dodal_Tarot_trump_05.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/70/Jean_Dodal_Tarot_trump_06.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/be/Jean_Dodal_Tarot_trump_07.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/d/dd/Jean_Dodal_Tarot_trump_08.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/6/69/Jean_Dodal_Tarot_trump_09.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/c/ca/Jean_Dodal_Tarot_trump_10.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/0b/Jean_Dodal_Tarot_trump_11.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/2/29/Jean_Dodal_Tarot_trump_12.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/70/Jean_Dodal_Tarot_trump_13.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/2/27/Jean_Dodal_Tarot_trump_14.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/3/38/Jean_Dodal_Tarot_trump_15.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/03/Jean_Dodal_Tarot_trump_16.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/3/30/Jean_Dodal_Tarot_trump_17.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/5/50/Jean_Dodal_Tarot_trump_18.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/ec/Jean_Dodal_Tarot_trump_19.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/4/40/Jean_Dodal_Tarot_trump_20.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/1/1d/Jean_Dodal_Tarot_trump_21.jpg",
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const DEATH_INDEX = 13;
+
+const tarotBg = document.getElementById('tarotBg');
+let deck = [];
+let deckIdx = 0;
+let currentImg = null;
+let carouselTimer = null;
+
+function buildDeck() {
+  const rest = ARCANA.filter((_, i) => i !== DEATH_INDEX);
+  const shuffled = shuffle(rest);
+  return [ARCANA[DEATH_INDEX], ...shuffled];
+}
+
+function preload(url) { const img = new Image(); img.src = url; }
+
+function randomPan() {
+  const range = 20;
+  const sx = -range + Math.random() * range * 2;
+  const sy = -range + Math.random() * range * 2;
+  let ex = -range + Math.random() * range * 2;
+  let ey = -range + Math.random() * range * 2;
+  while (Math.abs(ex - sx) + Math.abs(ey - sy) < 12) {
+    ex = -range + Math.random() * range * 2;
+    ey = -range + Math.random() * range * 2;
+  }
+  return { sx, sy, ex, ey };
+}
+
+function nextCard() {
+  preload(deck[(deckIdx + 1) % deck.length]);
+  preload(deck[(deckIdx + 2) % deck.length]);
+  const img = document.createElement('img');
+  img.src = deck[deckIdx]; img.alt = '';
+  const pan = randomPan();
+  img.style.top = pan.sy + '%';
+  img.style.left = pan.sx + '%';
+  img.style.transition = 'none';
+  tarotBg.appendChild(img);
+  requestAnimationFrame(() => { requestAnimationFrame(() => {
+    img.classList.add('visible');
+    img.style.transition = 'opacity 2.5s ease-in, top 9s ease-in-out, left 9s ease-in-out';
+    img.style.top = pan.ey + '%';
+    img.style.left = pan.ex + '%';
+  }); });
+  if (currentImg) {
+    const old = currentImg;
+    old.classList.remove('visible'); old.classList.add('fading');
+    setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 2500);
+  }
+  currentImg = img;
+  deckIdx = (deckIdx + 1) % deck.length;
+  if (deckIdx === 0) deck = buildDeck();
+  carouselTimer = setTimeout(nextCard, 8000);
+}
+
+deck = buildDeck();
+preload(deck[0]); preload(deck[1]); preload(deck[2]);
+setTimeout(nextCard, 400);
+
+const homeScreen = document.getElementById('home');
+const cartaScreen = document.getElementById('carta');
+const respiraScreen = document.getElementById('respira');
+const respiraText = document.getElementById('respiraText');
+const domandaWrap = document.getElementById('domandaWrap');
+const infoScreen = document.getElementById('info');
+const msgText = document.getElementById('msgText');
+
+function showRespira() {
+  respiraText.classList.remove('visible', 'hidden');
+  domandaWrap.classList.remove('visible');
+  homeScreen.classList.remove('active');
+  clearTimeout(carouselTimer);
+  setTimeout(() => {
+    respiraScreen.classList.add('active');
+    setTimeout(() => respiraText.classList.add('visible'), 100);
+    setTimeout(() => {
+      respiraText.classList.add('hidden');
+      setTimeout(() => domandaWrap.classList.add('visible'), 600);
+    }, 2000);
+  }, 600);
+}
+
+function showCarta() {
+  msgText.textContent = MESSAGGI[Math.floor(Math.random() * MESSAGGI.length)];
+  msgText.classList.remove('visible');
+  respiraScreen.classList.remove('active');
+  setTimeout(() => {
+    cartaScreen.classList.add('active');
+    setTimeout(() => msgText.classList.add('visible'), 500);
+  }, 600);
+}
+
+function showHome() {
+  cartaScreen.classList.remove('active');
+  respiraScreen.classList.remove('active');
+  infoScreen.classList.remove('active');
+  msgText.classList.remove('visible');
+  setTimeout(() => {
+    deck = buildDeck();
+    deckIdx = 0;
+    while (tarotBg.firstChild) tarotBg.removeChild(tarotBg.firstChild);
+    currentImg = null;
+    setTimeout(nextCard, 300);
+    homeScreen.classList.add('active');
+  }, 600);
+}
+
+function showInfo() {
+  homeScreen.classList.remove('active');
+  clearTimeout(carouselTimer);
+  setTimeout(() => {
+    infoScreen.scrollTop = 0;
+    infoScreen.classList.add('active');
+  }, 600);
+}
+
+document.getElementById('btnDot').addEventListener('click', showRespira);
+document.getElementById('btnTitle').addEventListener('click', showRespira);
+document.getElementById('btnDotRespira').addEventListener('click', showCarta);
+document.getElementById('btnInfo').addEventListener('click', function(e) { e.stopPropagation(); showInfo(); });
+document.getElementById('btnTorna').addEventListener('click', showHome);
+document.getElementById('btnInfoBack').addEventListener('click', showHome);
+</script>
+</body>
+</html>
