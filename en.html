@@ -48,12 +48,13 @@
     opacity: 0.1; pointer-events: none; mix-blend-mode: overlay;
   }
 
-  #home { cursor: default; }
+  #home { cursor: pointer; }
   .home-content {
     position: relative; z-index: 1;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center;
+    user-select: none;
   }
   .title {
     color: #f0ece6;
@@ -63,6 +64,7 @@
     line-height: 1.35;
     margin-bottom: 20px;
     text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7);
+    cursor: pointer;
   }
   .dot-wrap {
     cursor: pointer;
@@ -154,6 +156,7 @@
     font-size: clamp(16px, 3.2vw, 22px);
     line-height: 1.8;
     margin-bottom: 40px;
+    user-select: none;
   }
   .dot-pulse {
     animation: pulse 2s ease-in-out infinite;
@@ -176,6 +179,7 @@
     opacity: 0;
     transform: translateY(14px);
     transition: opacity 2s ease, transform 2s ease;
+    user-select: none;
   }
   .messaggio.visible { opacity: 1; transform: translateY(0); }
 
@@ -271,7 +275,7 @@
     <rect width="100%" height="100%" filter="url(#grain)"/>
   </svg>
   <div class="home-content">
-    <div class="title" id="btnTitle" style="cursor:pointer;">Messages of Fortune</div>
+    <div class="title" id="btnTitle">Messages of Fortune</div>
     <div class="dot-wrap" id="btnDot"><div class="dot"></div></div>
     <div class="subtitle-line"><a href="https://lucafausu.wordpress.com/" target="_blank" rel="noopener" class="subtitle-link">Lu Cafausu</a> / <a href="https://www.instagram.com/lac.o.le.mon/?hl=en" target="_blank" rel="noopener" class="subtitle-link">The Feast of the Living</a></div>
     <div class="subtitle-line" style="margin-bottom:12vh;"><a href="https://www.instagram.com/lac.o.le.mon/?hl=en" target="_blank" rel="noopener" class="subtitle-link">(who reflect upon death)</a></div>
@@ -580,6 +584,8 @@ function showHome() {
   respiraScreen.classList.remove('active');
   infoScreen.classList.remove('active');
   msgText.classList.remove('visible');
+  respiraText.classList.remove('visible', 'hidden');
+  domandaWrap.classList.remove('visible');
   setTimeout(() => {
     deck = buildDeck();
     deckIdx = 0;
