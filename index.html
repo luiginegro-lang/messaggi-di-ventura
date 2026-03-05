@@ -118,6 +118,42 @@
   }
   .nav-link:hover { color: #a52a6a; }
 
+  /* ── RESPIRA ── */
+  #respira { background: #0b0b0a; }
+  .respira-text {
+    color: #706b62;
+    font-size: clamp(18px, 3.5vw, 24px);
+    font-style: italic;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .respira-text.visible { opacity: 1; }
+  .respira-text.hidden { opacity: 0; transition: opacity 0.6s ease; }
+  .domanda-wrap {
+    position: absolute;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+  }
+  .domanda-wrap.visible { opacity: 1; pointer-events: auto; }
+  .domanda-text {
+    color: #a09a90;
+    font-size: clamp(16px, 3.2vw, 22px);
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+  .dot-pulse {
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(139,34,82,0.5); }
+    50% { transform: scale(1.4); box-shadow: 0 0 24px rgba(139,34,82,0.8); }
+  }
+
   /* ── CARTA ── */
   #carta { background: #0b0b0a; }
   .messaggio {
@@ -241,6 +277,15 @@
 <div id="carta" class="screen">
   <div class="messaggio" id="msgText"></div>
   <button class="btn-back" id="btnTorna">torna</button>
+</div>
+
+<!-- ════ RESPIRA ════ -->
+<div id="respira" class="screen">
+  <div class="respira-text" id="respiraText">respira...</div>
+  <div class="domanda-wrap" id="domandaWrap">
+    <div class="domanda-text">Poni una domanda esistenziale.<br>Non cercare una risposta.<br>Lascia che emerga.</div>
+    <div class="dot-wrap" id="btnDotRespira"><div class="dot dot-pulse"></div></div>
+  </div>
 </div>
 
 <!-- ════ INFO ════ -->
@@ -498,14 +543,31 @@ setTimeout(nextCard, 400);
 
 const homeScreen = document.getElementById('home');
 const cartaScreen = document.getElementById('carta');
+const respiraScreen = document.getElementById('respira');
+const respiraText = document.getElementById('respiraText');
+const domandaWrap = document.getElementById('domandaWrap');
 const infoScreen = document.getElementById('info');
 const msgText = document.getElementById('msgText');
+
+function showRespira() {
+  respiraText.classList.remove('visible', 'hidden');
+  domandaWrap.classList.remove('visible');
+  homeScreen.classList.remove('active');
+  clearTimeout(carouselTimer);
+  setTimeout(() => {
+    respiraScreen.classList.add('active');
+    setTimeout(() => respiraText.classList.add('visible'), 100);
+    setTimeout(() => {
+      respiraText.classList.add('hidden');
+      setTimeout(() => domandaWrap.classList.add('visible'), 600);
+    }, 2000);
+  }, 600);
+}
 
 function showCarta() {
   msgText.textContent = MESSAGGI[Math.floor(Math.random() * MESSAGGI.length)];
   msgText.classList.remove('visible');
-  homeScreen.classList.remove('active');
-  clearTimeout(carouselTimer);
+  respiraScreen.classList.remove('active');
   setTimeout(() => {
     cartaScreen.classList.add('active');
     setTimeout(() => msgText.classList.add('visible'), 500);
@@ -514,6 +576,7 @@ function showCarta() {
 
 function showHome() {
   cartaScreen.classList.remove('active');
+  respiraScreen.classList.remove('active');
   infoScreen.classList.remove('active');
   msgText.classList.remove('visible');
   setTimeout(() => {
@@ -535,8 +598,9 @@ function showInfo() {
   }, 600);
 }
 
-document.getElementById('btnDot').addEventListener('click', showCarta);
-document.getElementById('btnTitle').addEventListener('click', showCarta);
+document.getElementById('btnDot').addEventListener('click', showRespira);
+document.getElementById('btnTitle').addEventListener('click', showRespira);
+document.getElementById('btnDotRespira').addEventListener('click', showCarta);
 document.getElementById('btnInfo').addEventListener('click', function(e) { e.stopPropagation(); showInfo(); });
 document.getElementById('btnTorna').addEventListener('click', showHome);
 document.getElementById('btnInfoBack').addEventListener('click', showHome);
