@@ -2,353 +2,600 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
-<title>Caffeomanzia Cafausica</title>
-<meta name="theme-color" content="#0a0a08">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Messaggi di ventura — la casa cafausica</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--bg:#0a0a08;--tx:#ddd8d0;--t2:#a09a8e;--ac:#c8a96e;--cd:rgba(22,22,20,.88);--bd:#2a2824;--f:'Cormorant Garamond',Georgia,serif}
-html{font-size:18px}body{background:var(--bg);color:var(--tx);font-family:var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.8}
-.bg-w{position:fixed;inset:0;z-index:0;overflow:hidden}.bg-i{position:absolute;inset:-8%;width:116%;height:116%;object-fit:cover;opacity:0;transition:opacity 1.8s}.bg-i.on{opacity:1}.bg-i.i1{animation:k1 30s ease-in-out infinite alternate}.bg-i.i2{animation:k2 35s ease-in-out infinite alternate}
-@keyframes k1{0%{transform:scale(1)}100%{transform:scale(1.06) translate(-1.5%,1%)}}@keyframes k2{0%{transform:scale(1.04) translate(1%,-1%)}100%{transform:scale(1) translate(-1%,1.5%)}}
-.bg-o{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,8,.2) 0%,rgba(10,10,8,.6) 30%,rgba(10,10,8,.94) 100%)}
-.splash{position:relative;z-index:2;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;cursor:pointer;user-select:none}
-.s1{font-size:clamp(1.8rem,6vw,2.8rem);font-weight:300;letter-spacing:.12em;text-transform:uppercase;opacity:0;animation:fs 1.5s ease .3s forwards}
-.s2{font-size:clamp(1rem,3vw,1.4rem);font-weight:300;letter-spacing:.2em;text-transform:uppercase;margin-top:4px;opacity:0;animation:fs 1.5s ease .6s forwards}
-.s3{font-size:clamp(1.1rem,3vw,1.3rem);font-weight:300;font-style:italic;color:var(--t2);margin-top:14px;opacity:0;animation:fs 1.5s ease .9s forwards}
-.s4{color:var(--ac);font-size:1.1rem;letter-spacing:.5em;margin:44px 0;opacity:0;animation:fs 1s ease 1.2s forwards}
-.s5{font-size:clamp(1rem,2.5vw,1.15rem);font-weight:300;font-style:italic;color:var(--t2);margin-bottom:8px;opacity:0;animation:fs 1.2s ease 1.5s forwards}
-.s6{font-size:1rem;color:var(--t2);letter-spacing:.06em;margin-top:60px;opacity:0;animation:fs 1.2s ease 2s forwards}
-.s7{position:absolute;bottom:50px;font-size:.95rem;color:var(--ac);letter-spacing:.15em;text-transform:uppercase;animation:pulse 3s ease-in-out infinite}
-.menu{position:relative;z-index:2;padding:60px 28px 100px;max-width:540px;margin:0 auto}
-.menu-h{font-size:1rem;color:var(--ac);letter-spacing:.15em;text-transform:uppercase;margin-bottom:28px;text-align:center;opacity:0;animation:fs .6s ease .1s forwards}
-.rc{display:block;width:100%;padding:26px 24px;margin-bottom:20px;background:var(--cd);border:1px solid var(--bd);border-radius:12px;cursor:pointer;text-align:left;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;animation:fs .5s ease forwards;transition:border-color .3s;min-height:88px}
-.rc:nth-child(2){animation-delay:.12s}.rc:nth-child(3){animation-delay:.2s}.rc:nth-child(4){animation-delay:.28s}.rc:nth-child(5){animation-delay:.36s}
-.rc:active{border-color:var(--ac)}
-.rc-n{font-size:.9rem;color:var(--ac);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:8px}
-.rc-t{font-size:clamp(1.3rem,4vw,1.55rem);font-weight:400;display:block;margin-bottom:8px}
-.rc-d{font-size:1.05rem;color:var(--t2);font-weight:300;font-style:italic;display:block}
-.menu-sep{text-align:center;color:var(--ac);letter-spacing:.5em;margin:32px 0 24px;font-size:.9rem;opacity:0;animation:fs .6s ease .5s forwards}
-.menu-link{display:block;width:100%;padding:22px 24px;background:transparent;border:1px solid var(--bd);border-radius:12px;cursor:pointer;text-align:center;opacity:0;animation:fs .5s ease .55s forwards;transition:border-color .3s;margin-bottom:16px}
-.menu-link:active{border-color:var(--ac)}
-.menu-link-t{font-size:clamp(1.1rem,3vw,1.25rem);font-weight:400;display:block;margin-bottom:4px}
-.menu-link-d{font-size:1rem;color:var(--t2);font-weight:300;font-style:italic}
-.step{position:relative;z-index:2;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px 140px;text-align:center;max-width:580px;margin:0 auto;user-select:none}
-.st-nm{font-size:.95rem;color:var(--ac);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
-.st-ph{font-size:.9rem;color:var(--t2);letter-spacing:.08em;margin-bottom:32px;text-transform:uppercase}
-.st-tx{font-size:clamp(1.25rem,3.8vw,1.55rem);font-weight:300;line-height:1.75;opacity:0;animation:fs .4s ease forwards}
-.st-nt{font-size:clamp(1.05rem,2.8vw,1.2rem);color:var(--t2);font-style:italic;margin-top:24px;font-weight:300;line-height:1.7;opacity:0;animation:fs .4s ease .12s forwards}
-.bb{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:640px;z-index:50;background:rgba(10,10,8,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--bd);border-radius:12px 12px 0 0}
-.bb-prog{height:2px;background:rgba(255,255,255,.05)}.bb-prog-f{height:100%;background:var(--ac);transition:width .4s;opacity:.6}
-.bb-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 28px}
-.bb-btn{background:none;border:1px solid var(--bd);color:var(--ac);font-family:var(--f);font-size:1.1rem;cursor:pointer;padding:12px 24px;border-radius:8px;transition:all .2s;min-width:56px;min-height:52px;display:flex;align-items:center;justify-content:center}
-.bb-btn:active{background:rgba(200,169,110,.12);border-color:var(--ac)}
-.bb-btn.off{color:var(--t2);opacity:.2;pointer-events:none}
-.bb-mid{text-align:center;flex:1}
-.bb-ct{font-size:.95rem;color:var(--t2)}
-.bb-ex{font-size:1rem;color:var(--ac);cursor:pointer;background:none;border:none;font-family:var(--f);padding:8px 16px;opacity:.8}
-.bb-ex:active{opacity:1}
-.read{position:relative;z-index:2;padding:40px 28px 120px;max-width:660px;margin:0 auto}
-.read h2{font-size:clamp(1.3rem,4vw,1.6rem);font-weight:400;margin:2.5em 0 1em;line-height:1.35}.read h2:first-of-type{margin-top:.5em}
-.read h3{font-size:clamp(1.1rem,3vw,1.25rem);font-weight:500;margin:2em 0 .8em}
-.read p{font-size:clamp(1.05rem,2.5vw,1.2rem);margin-bottom:1.4em;font-weight:300;line-height:1.85}
-.read .it{font-style:italic;color:var(--t2)}.read .sep{text-align:center;color:var(--ac);letter-spacing:.5em;margin:2em 0}
-.read .bl{font-weight:500}.read .cred{text-align:center;font-style:italic;color:var(--t2);font-size:1rem;margin-top:3em}
-.vov{position:fixed;inset:0;background:rgba(10,10,8,.96);z-index:200;overflow-y:auto;padding:60px 28px 100px;opacity:0;pointer-events:none;transition:opacity .35s;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.vov.on{opacity:1;pointer-events:auto}
-.vo-t{font-size:1rem;color:var(--ac);letter-spacing:.15em;text-transform:uppercase;margin-bottom:36px;text-align:center}
-.vo-i{margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--bd)}.vo-i:last-child{border-bottom:none}
-.vo-w{font-size:1.25rem;font-weight:500;margin-bottom:8px}.vo-d{font-size:1.1rem;font-weight:300;color:var(--t2);line-height:1.8}
-.vo-x{display:block;margin:20px auto 0;background:var(--cd);border:1px solid var(--bd);color:var(--ac);font-family:var(--f);font-size:1.05rem;padding:14px 36px;border-radius:8px;cursor:pointer}
-@keyframes fs{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:.2}50%{opacity:.6}}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0b0b0a; }
+  body { font-family: 'Lora', 'Georgia', serif; }
+
+  .screen {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+  .screen.active { opacity: 1; pointer-events: auto; }
+
+  .tarot-bg { position: absolute; inset: 0; overflow: hidden; }
+  .tarot-bg img {
+    position: absolute;
+    top: -20%; left: -20%;
+    width: 140%; height: 140%;
+    object-fit: cover;
+    filter: grayscale(100%) blur(2px) brightness(0.28) contrast(1.3);
+    opacity: 0;
+    transition: none;
+  }
+  .tarot-bg img.visible {
+    opacity: 1;
+    transition: opacity 2.5s ease-in;
+  }
+  .tarot-bg img.fading {
+    opacity: 0;
+    transition: opacity 2s ease-out;
+  }
+  .vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 12%, #0b0b0a 68%);
+    pointer-events: none;
+  }
+  .grain {
+    position: absolute; inset: 0;
+    opacity: 0.1; pointer-events: none; mix-blend-mode: overlay;
+  }
+
+  #home { cursor: pointer; }
+  .home-content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    user-select: none;
+  }
+  .title {
+    color: #f0ece6;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7);
+    cursor: pointer;
+  }
+  .dot-wrap {
+    cursor: pointer;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #8b2252;
+    box-shadow: 0 0 12px rgba(139,34,82,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .dot-wrap:hover .dot {
+    transform: scale(1.3);
+    box-shadow: 0 0 20px rgba(139,34,82,0.7);
+  }
+  .subtitle-line {
+    text-align: center;
+    font-size: clamp(12px, 2.2vw, 14px);
+    letter-spacing: 0.12em;
+    color: #706b62;
+    text-shadow: 0 1px 15px rgba(0,0,0,0.8);
+  }
+  .subtitle-link {
+    color: #706b62;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: clamp(12px, 2.2vw, 14px);
+    letter-spacing: 0.12em;
+    text-shadow: 0 1px 15px rgba(0,0,0,0.8);
+    text-decoration: none;
+    transition: color 0.4s;
+  }
+  .subtitle-link:hover { color: #a09a90; }
+  .home-nav {
+    position: absolute;
+    bottom: 7vh;
+    z-index: 2;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+  .nav-link {
+    color: #8b2252;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    background: none; border: none;
+    transition: color 0.4s;
+    user-select: none;
+  }
+  .nav-link:hover { color: #a52a6a; }
+  .lang-link {
+    color: #706b62;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .lang-link:hover { color: #a09a90; }
+
+  /* ── RESPIRA ── */
+  #respira { background: #0b0b0a; }
+  .respira-text {
+    color: #706b62;
+    font-size: clamp(18px, 3.5vw, 24px);
+    font-style: italic;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .respira-text.visible { opacity: 1; }
+  .respira-text.hidden { opacity: 0; transition: opacity 0.6s ease; }
+  .domanda-wrap {
+    position: absolute;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+  }
+  .domanda-wrap.visible { opacity: 1; pointer-events: auto; }
+  .domanda-text {
+    color: #a09a90;
+    font-size: clamp(16px, 3.2vw, 22px);
+    line-height: 1.8;
+    margin-bottom: 40px;
+    user-select: none;
+  }
+  .dot-pulse {
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(139,34,82,0.5); }
+    50% { transform: scale(1.4); box-shadow: 0 0 24px rgba(139,34,82,0.8); }
+  }
+
+  /* ── CARTA ── */
+  #carta { background: #0b0b0a; }
+  .messaggio {
+    color: #f0ece6;
+    font-size: clamp(19px, 4vw, 28px);
+    font-weight: 400;
+    line-height: 1.75;
+    text-align: center;
+    max-width: 580px;
+    padding: 0 8vw;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 2s ease, transform 2s ease;
+    user-select: none;
+  }
+  .messaggio.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── INFO ── */
+  #info {
+    background: #0b0b0a;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10vh 8vw 14vh;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .info-inner {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .info-title {
+    color: #f0ece6;
+    font-size: clamp(22px, 4.5vw, 34px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+  .info-sep {
+    width: 30px;
+    height: 1px;
+    background: #2a2825;
+    margin: 40px 0;
+  }
+  .info-epigraph {
+    color: #807a70;
+    font-size: clamp(14px, 2.8vw, 17px);
+    font-style: italic;
+    line-height: 1.75;
+  }
+  .info-epigraph-author {
+    color: #4a4640;
+    font-size: clamp(12px, 2.2vw, 14px);
+    margin-top: 10px;
+  }
+  .info-body {
+    color: #a09a90;
+    font-size: clamp(14px, 2.8vw, 17px);
+    line-height: 1.85;
+  }
+  .info-body + .info-body { margin-top: 20px; }
+  .info-body-link {
+    color: #8b2252;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .info-body-link:hover { color: #a52a6a; }
+  .info-foot {
+    color: #3a3530;
+    font-size: clamp(11px, 1.8vw, 12px);
+    letter-spacing: 0.03em;
+  }
+  .info-foot a {
+    color: #8b2252;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .info-foot a:hover { color: #a52a6a; }
+  .btn-back {
+    position: fixed;
+    bottom: 7vh;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #8b2252;
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    background: none; border: none;
+    transition: color 0.4s;
+    user-select: none;
+    z-index: 10;
+  }
+  .btn-back:hover { color: #a52a6a; }
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
-<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+
+<!-- ════ HOME ════ -->
+<div id="home" class="screen active">
+  <div class="tarot-bg" id="tarotBg"></div>
+  <div class="vignette"></div>
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg">
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch"/></filter>
+    <rect width="100%" height="100%" filter="url(#grain)"/>
+  </svg>
+  <div class="home-content">
+    <div class="title" id="btnTitle">Messaggi di ventura</div>
+    <div class="dot-wrap" id="btnDot"><div class="dot"></div></div>
+    <div class="subtitle-line"><a href="https://lucafausu.wordpress.com/" target="_blank" rel="noopener" class="subtitle-link">Lu Cafausu</a> / <a href="https://www.instagram.com/lac.o.le.mon/?hl=en" target="_blank" rel="noopener" class="subtitle-link">La Festa dei Vivi</a></div>
+    <div class="subtitle-line" style="margin-bottom:12vh;"><a href="https://www.instagram.com/lac.o.le.mon/?hl=en" target="_blank" rel="noopener" class="subtitle-link">(che riflettono sulla morte)</a></div>
+  </div>
+  <div class="home-nav">
+    <button class="nav-link" id="btnInfo">nota</button>
+    <a href="en.html" class="lang-link">eng</a>
+  </div>
+</div>
+
+<!-- ════ CARTA ════ -->
+<div id="carta" class="screen">
+  <div class="messaggio" id="msgText"></div>
+  <button class="btn-back" id="btnTorna">torna</button>
+</div>
+
+<!-- ════ RESPIRA ════ -->
+<div id="respira" class="screen">
+  <div class="respira-text" id="respiraText">respira...</div>
+  <div class="domanda-wrap" id="domandaWrap">
+    <div class="domanda-text">Poniti una domanda esistenziale.<br>Non cercare una risposta.<br>Lascia che affiori.</div>
+    <div class="dot-wrap" id="btnDotRespira"><div class="dot dot-pulse"></div></div>
+  </div>
+</div>
+
+<!-- ════ INFO ════ -->
+<div id="info" class="screen">
+  <div class="info-inner">
+    <div class="info-title">Messaggi di ventura</div>
+    <div class="info-sep"></div>
+    <div class="info-epigraph">Nessun mortale riesce a convincersi che sta morendo, e a fissare la morte. Deve correre, deve pensare, deve parlare. Deve parlare con chi resta.</div>
+    <div class="info-epigraph-author">Cesare Pavese, <em>Dialoghi con Leucò</em></div>
+    <div class="info-sep"></div>
+    <div class="info-body">Le frasi sono tratte dal libro omonimo, ispirato a un'idea pensata per l'edizione 2021 de La festa dei vivi (che riflettono sulla morte), mai realizzata per la pandemia. Il libro è stato pubblicato dalla casa cafausica nell'ottobre 2022, con testi di Lu Cafausu — Giancarlo Norese, Luigi Negro, Luigi Presicce, Emilio Fantin, Cesare Pietroiusti — e reso possibile dalla collaborazione di Maria V. Tarantino, studiosa dei tarocchi e tarologa. <a href="https://amzn.eu/d/09ujkIh3" target="_blank" rel="noopener" class="info-body-link">Acquista il libro</a></div>
+    <div class="info-body">Alcune di queste frasi sono una scomposizione di significati legati alle domande che nel tempo il gruppo Lu Cafausu si è posto sui temi del vivere e del morire; altre nascono dalla lettura libera delle carte dei tarocchi. Per queste ultime, sono stati presi in considerazione sia gli arcani maggiori sia una selezione di arcani minori più strettamente legati ai temi celebrati ne La Festa dei Vivi (che riflettono sulla morte).</div>
+    <div class="info-body">Le frasi contenute in questa pubblicazione possono essere liberamente utilizzate per esercizi o esperimenti di divinazione; ciascuno può decidere il proprio metodo di utilizzo. La personalizzazione e la cura individuale del libro sono particolarmente benvenute: ad esempio, aggiungere una sovraccoperta, pressare fiori o altre forme vegetali tra le pagine e lasciarle essiccare, scrivere nuove frasi su pagine aggiunte o su quelle bianche.</div>
+    <div class="info-sep"></div>
+    <div class="info-body">Lu Cafausu è il nome scelto da un collettivo di artisti, ma anche un luogo reale: un piccolo cafausino in pietra leccese, situato a San Cesario di Lecce. Collocato alla fine di quello che era il parco di una villa dei primi del Novecento — oggi completamente scomparsa — si trova invece al centro di un quartiere di palazzine e condomini costruiti dalla fine degli anni Novanta in poi. Per le sue particolari condizioni, Lu Cafausu è divenuto metafora e fonte di ispirazione per storie, performance, rituali, pellegrinaggi e azioni nel paese di San Cesario e in diverse città europee e americane — simbolo di qualcosa che è, allo stesso tempo, sia centrale che marginale, dove le contraddizioni estetiche incontrano il senso (o il nonsenso) del nostro tempo. Una cappella della desistenza, della fragilità, e allo stesso tempo della potenza. Un luogo immaginario che esiste davvero.</div>
+    <div class="info-body">La Festa dei Vivi (che riflettono sulla morte) è una celebrazione in coincidenza con il 2 novembre, un progetto collaborativo di Lu Cafausu che da molti anni chiama artisti da tutto il mondo a elaborare una riflessione sulla morte come trasformazione, soglia, mistero, ma anche come orizzonte necessario di senso. In varie parti del mondo, all'inizio di novembre, si celebrano i defunti — ricordando chi non c'è più, pregando, visitando i luoghi di sepoltura. In un modo o nell'altro, tutti cerchiamo di stabilire un contatto con i nostri cari scomparsi, e questo avviene spesso considerando il nostro destino comune — riflettendo, cioè, sulla morte in generale. Fin dall'inizio, Lu Cafausu ha dato vita a uno spazio immaginario in cui pensieri, analogie e coincidenze hanno cercato di trovare eco nelle voci e nelle immagini interiori suscitate dall'incontro con i morti, o dalla consapevolezza del destino dei vivi, attraverso diverse modalità di pratica, riflessione o meditazione che possano creare uno spazio tra la vita e la morte, tra i defunti e i mortali. La consapevolezza del nostro destino comune e ineluttabile può creare forme di incontro e sensibilità tra i partecipanti alla festa, chiunque essi siano.</div>
+    <div class="info-sep"></div>
+    <div class="info-foot">
+      ISBN 979-8-3583-1869-4<br>
+      <a href="https://www.lacolemon.org" target="_blank" rel="noopener">www.lacolemon.org</a>
+    </div>
+  </div>
+  <button class="btn-back" id="btnInfoBack">torna</button>
+</div>
+
 <script>
-var h=React.createElement,us=React.useState,ue=React.useEffect;
-
-// RECIPES — Incontro has common steps + branching variants
-var RR=[
-{num:"I",nm:"Il Caff\u00e8 Sacrificale",ds:"Lettura pura. Non si beve.",ss:[
-{p:"Preparazione",t:"Prendi il caff\u00e8 esausto. Chicchi specialty invecchiati, buste dimenticate, lotti rifiutati."},
-{p:"Preparazione",t:"Pesa 25 grammi di chicchi."},
-{p:"Preparazione",t:"Macina medio-grosso con macinino manuale. I chicchi vecchi produrranno naturalmente fines. Questa fragilit\u00e0 \u00e8 la risorsa della ricetta."},
-{p:"Preparazione",t:"Scalda 150 ml di acqua a 90\u201395\u00b0C."},
-{p:"Infusione",t:"Versa l\u2019acqua sulla macinatura in una tazza o ciotola. Copri con un piattino."},
-{p:"Infusione",t:"Cinque minuti. In silenzio.",n:"Il silenzio \u00e8 parte della ricetta."},
-{p:"Colatura",t:"Lascia intiepidire. Prepara un foglio di carta per acquerello bianca, almeno 200 g/m\u00b2."},
-{p:"Colatura",t:"Versa tutto \u2014 liquido e fondo \u2014 al centro della carta. Un gesto unico e deciso. La materia si espande da sola."},
-{p:"Attesa",t:"Attendi che asciughi. Da venti minuti a un\u2019ora."},
-{p:"Lettura",t:"Osserva il monotipo. Densit\u00e0 e rarefazione, centro e periferia, continuit\u00e0 e frattura, bordi, velocit\u00e0, residui."},
-{p:"Archivio",t:"Annota sul retro: la data, il caff\u00e8, una parola. Conserva la carta."},
-]},
-{num:"II",nm:"Il Caff\u00e8 Parlante",ds:"Si beve e si legge. Pratica conviviale.",ss:[
-{p:"Preparazione",t:"Caff\u00e8 esausto pi\u00f9 aromatiche: scorza di limone o arancia secca, anice stellato, cannella, verbena, cardamomo, chiodi di garofano."},
-{p:"Preparazione",t:"Pesa 25 g di caff\u00e8 e 3\u20135 g di aromatiche. Macina medio-grosso. Mescola. Scalda 250 ml a 90\u201395\u00b0C."},
-{p:"Estrazione",t:"Carica il cestello della cuccumella con caff\u00e8 e aromatiche mescolati."},
-{p:"Estrazione",t:"La cuccumella al contrario: non capovolgere. Versa l\u2019acqua dall\u2019alto. L\u2019acqua scende per gravit\u00e0.",n:"Il gesto fondamentale \u2014 rovesciare il mondo \u2014 viene sospeso."},
-{p:"La doppia tazza",t:"Prima met\u00e0: filtra con carta. Il caff\u00e8 da bere. Seconda met\u00e0: non filtrare. La tazza della lettura.",n:"La carta filtrante \u00e8 la soglia tra il piacere e la divinazione."},
-{p:"Il rito",t:"Bevete insieme la prima tazza. Parlate, state, ascoltate."},
-{p:"Lettura",t:"Il consultante beve la seconda tazza fino all\u2019ultimo terzo. Capovolgi sul piattino. Tre-cinque minuti."},
-{p:"Lettura",t:"Leggi a voce, in dialogo. Descrivi le relazioni spaziali, i vuoti. Chi consulta risponde.",n:"Figure fatte pi\u00f9 di assenza che di presenza."},
-]},
-{num:"III",nm:"Il Caff\u00e8 della Soglia",ds:"La lettura \u00e8 nel tempo. Pratica dell\u2019ascolto.",ss:[
-{p:"Preparazione",t:"Caff\u00e8 esausto pi\u00f9 ingrediente secco: buccia d\u2019arancia secca, camomilla, cardamomo, petali di rosa secchi."},
-{p:"Preparazione",t:"Pesa 25 g di caff\u00e8 e 5\u20138 g di materiale secco. Macina medio-fine. Scalda 200 ml a 100\u00b0C."},
-{p:"Estrazione",t:"Carica il cestello con caff\u00e8 e materiale secco, ben pressati. Riempi il serbatoio. Capovolgi."},
-{p:"Estrazione",t:"Avvia la registrazione audio sul telefono."},
-{p:"L\u2019ascolto",t:"Ascolta senza guardare. Il gocciolio sar\u00e0 irregolare: rapido, poi lento, con pause e silenzi lunghi.",n:"Dai venti ai quaranta minuti."},
-{p:"L\u2019ascolto",t:"Presta attenzione al ritmo. Le pause. Il momento in cui cambia. L\u2019ultima goccia, dopo la quale il silenzio diventa definitivo."},
-{p:"Lettura",t:"La lettura \u00e8 gi\u00e0 avvenuta. Le percezioni durante l\u2019attesa sono la lettura."},
-{p:"Archivio",t:"Ferma la registrazione. Il file sonoro \u00e8 un documento oracolare. Conservalo."},
-]},
-// Incontro — special: has common steps, then branches
-{num:"IV",nm:"Il Caff\u00e8 dell\u2019Incontro",ds:"Due assenze si incontrano. Si beve.",branching:true,
-common:[
-{p:"",t:"Un caff\u00e8 che ha superato i trenta giorni non \u00e8 morto. Ha perso la voce. L\u2019individuo \u00e8 diventato categoria.",n:"Possibile solo come protesi \u2014 quando il caff\u00e8 ha gi\u00e0 attraversato la soglia."},
-{p:"Preparazione",t:"Pesa 35 g di caff\u00e8 esausto. Monorigine che \u00e8 stato buono. Macina grosso (C40: 28\u201330 click). Scalda 500 ml a 90\u201392\u00b0C."},
-{p:"Preparazione",t:"Scegli una sola aromatica. Buccia d\u2019arancia essiccata oppure un baccello di cardamomo verde.",n:"Evitare cannella, anice stellato, vaniglia. Troppo dominanti."},
-{p:"Il principio",t:"Il caff\u00e8 viene estratto da solo. Le aromatiche arrivano dopo, nel liquido, come ospiti brevi. Non lavorano. Passano."},
-],
-variants:[
-{nm:"French press",ss:[
-{p:"French press",t:"Versa l\u2019acqua sul caff\u00e8 nella French press. Quattro minuti senza aromatiche. Il caff\u00e8 \u00e8 solo con s\u00e9 stesso."},
-{p:"French press",t:"Aggiungi le aromatiche. Un minuto. Premi lo stantuffo. Versa."},
-{p:"",t:"Bevi lentamente. Il caff\u00e8 \u00e8 il letto, la spezia \u00e8 il sogno.",n:"Un fantasma aromatico, non una presenza piena."},
-]},
-{nm:"Cuccumella classica",ss:[
-{p:"Cuccumella classica",t:"Cestello con solo caff\u00e8, senza aromatiche. Riempi il serbatoio. Capovolgi. Estrai normalmente."},
-{p:"Cuccumella classica",t:"Versa nella tazza. Aggiungi le aromatiche nel liquido caldo. Un minuto. Rimuovi con un cucchiaio o un colino."},
-{p:"",t:"Bevi lentamente. Il caff\u00e8 \u00e8 il letto, la spezia \u00e8 il sogno.",n:"Un fantasma aromatico, non una presenza piena."},
-]},
-{nm:"Cuccumella aFa",ss:[
-{p:"Cuccumella aFa",t:"Cestello con solo caff\u00e8. Versa l\u2019acqua dall\u2019alto senza capovolgere. L\u2019acqua scende per gravit\u00e0."},
-{p:"Cuccumella aFa",t:"Versa nella tazza. Aggiungi le aromatiche nel liquido. Un minuto. Rimuovi."},
-{p:"",t:"Bevi lentamente. Il caff\u00e8 \u00e8 il letto, la spezia \u00e8 il sogno.",n:"Un fantasma aromatico, non una presenza piena."},
-]},
-],
-},
+const MESSAGGI = [
+  "Gli strumenti sono sul tavolo: coppe, coltelli, denari e dadi, i bisturi tra le mani. Il chirurgo è cieco.",
+  "Tutte le carte son da giocare.",
+  "Al bivio siamo tormento, ci fermiamo edificando nella sabbia, basterebbe interrogarci, la fonte è limpida, ci indica la direzione.",
+  "Le parole che esprimono il lamento per la morte e il rimpianto per ciò che non è accaduto, sono la prima poesia.",
+  "La torre crollò, morirono centomila nessuno, uno si salvò.",
+  "Zampilla la sorgente dal tetto del mondo, ricade, prosegue nel letto del fiume, risale per grondaie celesti. Come in alto così in basso.",
+  "Il silenzio è il sacro, prima della parola umana. Sfida, profanazione, ri-creazione.",
+  "La consapevolezza e la capacità del superamento dei due soffi, delle dualità amorose o guerriere, è il gesto dell'arte, della genesi, della riproduzione, dell'essere altri da sé.",
+  "Lei che delle Lune ha in mano il testo, ci ammanta, se ti appoggi al suo grembo ascolti l'Ade.",
+  "Sognammo gli alberi del falso pepe ed erano vivi, nel sogno si muovevano nella brezza autunnale. In un attimo tutto cambiò, il vento li divorò e noi contavamo i brandelli nei giorni: erano settantotto, e capimmo che non c'è scampo quando ciò che sogni insegue la vita.",
+  "Non dare mai una spada a un uomo che non sa ballare.",
+  "Abbiamo portato i nostri morti — in camminate e processioni, su autobus e barche, per le strade, dentro palazzi e edifici abbandonati.",
+  "Recido il gambo, la coda cade molle, batto la moneta e tiro le lame.",
+  "La lingua pende, il mulo passa, il culo sbanda, la verga lancia, il sipario cala alla fine.",
+  "Il re fischia e lei si immischia, il matto arriva, sono pieno di botte — senza scudo corre la brama della luna impazzita.",
+  "La donna regna, la primavera irrompe, la vita si rigenera da ciò che è sepolto.",
+  "Un caffè per questo mondo e per l'altro!",
+  "La qualità dell'Uno è quella del cammino che tiene la coesione nella disparità — la qualità per cui Dio, Eva e Adamo costituiscono la stessa materia, la stessa entità, lo stesso inizio, la stessa totalità.",
+  "Non c'è nulla di più doloroso di ciò che è morto e sepolto dentro di noi.",
+  "Di nero si veste la notte, e tu ti vesti da morto.",
+  "Falso sei, eppure tutto è chiaro. La trasformazione si apre davanti ai tuoi occhi.",
+  "Il matto è come un corso d'acqua che segue ogni canale.",
+  "Solido, si impone al centro del regno; il suo calore acquieterà i corpi dei vivi, fino alla noia mortale.",
+  "Sono di solito i grandi della terra a venir sepolti con gli attributi del loro comando, corone d'oro, anelli, scettri, vesti di lamine splendenti.",
+  "Far fagotto, viaggiare e non voltarsi. Che non si faccia come Orfeo con la sua Euridice.",
+  "Squarciato è il cielo, emergiamo dal sonno morti, vivi e risorti.",
+  "Dopo la morte si è trascinati dal carro i cui cavalli si muovono in verticalità opposte. Siamo noi i cocchieri! Sapremo unire legge e giustizia? La direzione presa sarà ricompensa in vita.",
+  "C'è uno spirito sensibile, in ogni albero (i greci le chiamavano amadriadi). Nessun dio lascerà impunito il taglio fatto senza cura e senza necessità.",
+  "Sul tavolo che ci sostiene, due piatti. In uno la piuma, nell'altro il cuore e in mezzo la morte. Avere o dare ragione?",
+  "Le lingue e le idee nell'entusiasmo risuonano folli, e lo sono per davvero; trovare la propria voce non è facile, a volte è importante frenare la lingua, ma di più la mente.",
+  "L'anziano cammina sereno nel buio, avanza all'indietro. La torcia illumina l'evidente, ma il tempo è finito.",
+  "Istruzioni per l'uso: leggere le regole alla base del mondo può coincidere con il produrre forme limpide di sintesi, apparentemente pura razionalità, in realtà è il frutto del corpo dell'uno.",
+  "C'è un ritorno possibile, dal regno dei morti. Per lo più, prende la forma di un racconto, oppure di un raccolto.",
+  "Fluidi alimentano il tuo ventre e sgorgano scintille.",
+  "La memoria inganna solo chi vuol dimenticare.",
+  "Un'opera rotta, spezzata, distrutta, marcita, non muore, si rigenera nella memoria o nel corpo.",
+  "I sensi collassano nell'esplosione del tetto, l'edificio è squarcio, con i testimoni oculisti che tacciono nell'angolo, eppure leggero mi sento di guardare il cobalto nel cielo in fiamme.",
+  "In un giorno luminoso di vento, il racconto gioioso della trasformazione delle nuvole, fino alla loro scomparsa.",
+  "Abbandonati all'amore, donare è il primo dei numeri pari, non si coniuga con l'uno o altri dispari, ma non sono calcoli che si fanno su un unico tempo.",
+  "Accarezza la ferocia ai tuoi piedi, placa la bestia.",
+  "Danziamo nudi con gli elementi del mondo, liberi dalla morte e dalla vita. Siamo il fiore effimero che nasce dall'abisso.",
+  "La gabbia è dorata solo dall'interno.",
+  "Due persone hanno vissuto in te per tutta la vita. Una è egoica e loquace, l'altra vive nell'oblio, la sua voce l'hai ascoltata raramente, ti è però apparsa pacata.",
+  "Germina dalla digestione delle idee, la lotta per la vita non genera conflitti, la rendono unità.",
+  "Comprendere e accogliere il pensiero dell'altro, abbandonare il morso della mente e dei denti sulla carne lacerata. Potrebbe essere la tua.",
+  "Mettiti nelle condizioni di un reale ascolto e alloggia una nuova comprensione dei fenomeni locali.",
+  "Non sono in grado di sopportare da solo l'immagine della morte. La morte è ciò che condividiamo per eccellenza. Ci coglie in momenti diversi ma ci si può preparare insieme, perché essa rappresenta il senso più profondo della nostra condizione comune.",
+  "Gira il mondo gira! Dall'alto della ruota, nel vivere e nel morire, il panorama è magnifico.",
+  "Questa ammirevole resistenza non è che la forma più alta della desistenza: è il tukdam.",
+  "Il desiderio fermenta, infiamma i corpi, sovrasta la vita eppure non scioglie le catene: è per questo che restiamo schiavi del destino mortale?",
+  "In ginocchio sulla riva di un fiume, nella notte stellata un grillo canta nell'ombra.",
+  "Lei impugna la falce e taglia il campo netto — rapida e silenziosa getta un piccolo piombo nel pozzo. Cade pesante negli abissi marini dei tuoi sentimenti, crolla sulla tua memoria. È doloroso, eppure sei davanti alla vista infinita di una valle; al sole lei ti apre le viscere — tira fuori con le mani il minerale oscuro, non temere di sporcarti.",
+  "Ciò che abbiamo cercato nella vita adesso può diventare l'opera.",
+  "Ci riveliamo estranei accanto a chi ci ha generato.",
+  "Che cos'è l'immortalità senza il cammino della morte, cosa i dorati semi senza la terra?",
+  "Stabiliamo connessioni, eppure libere dai criteri abituali della consequenzialità.",
+  "Il quarto capitolo della Genesi vede Caino uccidere il fratello — eppure eravamo appena diventati società.",
+  "Quando odi l'altro, l'altro è sempre tuo fratello.",
+  "Scoprire facoltà impreviste in terreni sconosciuti.",
+  "Fluida apparizione della vita e della morte. Occhi vitrei e fiori — appari al momento giusto, accompagni il cuore in ogni dolore, fino al conforto.",
+  "Il morente, sulla soglia della fine, vivrà l'esperienza di essere consumato dalle fiamme — si vive nel crepitio di un fuoco.",
+  "Essere consapevoli, denudare la propria femminilità, radicarsi nella presenza, saper davvero ascoltare — si può, si deve.",
+  "Ogni giorno camminiamo lentamente verso ciò da cui fuggiamo.",
+  "Come Giuseppe Maria Desa volo sui tetti e sogno di tornare a casa, ma non posso. Sorvolo la spiaggia e i pini dell'isola, scorgo dall'alto i santissimi asini che ragliano al cielo la loro distanza da Dio — solo non sono; qui bisogna solo imparare ad atterrare.",
+  "Le nuove lingue si apprendono ascoltando — soprattutto ascoltando — e solo dopo parlando.",
+  "Unire il cosmo e il nano, produrre il senso che dona unità tra funzione e inutilità — lì si è sempre trovata la bellezza.",
+  "In fondo a ogni discorso non c'è una verità, ma un ritmo.",
+  "Dentro, intorno o fuori di noi appare la figura di un pedagogo — insopportabile professionista, ubriaco di chiarezza e incisività, solido in teoria, brillante nella comunicazione; potrebbe valere la pena dargli sostanza.",
+  "Se siamo riusciti a passare dalla parola al silenzio, possiamo ora saltare verso l'amore.",
+  "L'entusiasmo davanti alle idee diventa passione per l'analisi o lo studio. Ma la mente è immatura — non distingue tra credere e sapere, e credere di sapere. Eppure questi dilemmi sono una trappola: si può fare entrambe le cose?",
+  "Il rimpianto è il pensiero che non si accorda con ciò che è accaduto.",
+  "Il muro dietro i nostri corpi è caldo; il nostro futuro irradia gemme sul nostro passato.",
+  "Il negromante si trasmuta e fiorisce se liberiamo ciò che appare immobile.",
+  "Ciò che amiamo è già stato amato dai nostri genitori.",
+  "Pagheremo il nostro pedaggio in malinconia — verrà con noi come un feto morto nel ventre.",
+  "Afferrato per braccia e gambe, appeso a testa in giù. Guardando in basso il fondale oscilla — e si nasce morendo.",
+  "Il seme sepolto nella terra è la genesi della conoscenza — nulla sembra cambiare, eppure tutto è in espansione.",
+  "È giusto seppellire un tesoro? Siamo certi che nessuno ruberà mai un corpo sepolto nelle profondità?",
+  "Non è sempre utile abbandonare un mondo per crearne uno nuovo — potremmo anche infilarlo nel taschino, o meglio ancora, piantarlo nella terra. Innaffiarlo di tanto in tanto; basterà.",
+  "La vera devozione è una forma di ricettività non violenta alla verità, radicata nella gratitudine stupita, eppure dona forme sottili di intelligenza e sensibilità.",
+  "Non puoi tornare indietro e non è facile far finta che nulla sia stato, non si muore solo di morte.",
+  "Siamo ancora qui di notte, con le nostre parrucche blu, senza nostalgia e senza rimpianto. Se è un incubo, allora siamo vivi.",
+  "Guarda lentamente il luogo dove il tempo è sospeso, dove qualcosa non è ancora — è lì che il desiderio non si consuma.",
+  "Sai tracciare una linea da te all'orizzonte? È lì che troverai la vita oltre la fine.",
+  "Il cavallo dipinto svanisce se il maniscalco trascura il curasnette; l'odore dello sterco resta dopo la morte, eppure la tela bianca profuma di lillà.",
+  "Adesso puoi cominciare ad attraversare il fiume che porta all'altrove.",
+  "Il tuo mondo sarà consumato in un olocausto, prima che arrivi il vento e spazzi tutto pulito dalla cenere.",
+  "Il figlio somiglia al padre quanto alla madre, poi lascia casa e porta tutto con sé — tranne loro.",
+  "Non è mai dato sapere in quale tasca la morte si fa sentire.",
+  "Tutto l'amore del mondo non basta a sfamare la Terra.",
+  "Ciò che è presente in potenza non si è ancora manifestato — attrazione e disgusto sono opposti e parte di un'unità, come il dolore e il piacere. Lo sappiamo bene.",
+  "Sorridi — con leggerezza, sorridi.",
+  "Non ci sarebbe possibilità di conoscere la morte, se accadesse una sola volta.",
+  "Vivere al gerundio. Facendo, non fatto. Passando, non passato. Morendo, non morto.",
+  "Ciò che conta non è la forza, ma l'audacia nella resa.",
+  "Il dialogo dall'una unità verso l'altra richiede la qualità del proprio in relazione all'altro — è la potenza della resa nell'atto del fare l'amore.",
+  "Il piede destro segue il sinistro a ogni passo.",
+  "Quando nulla è ancora nato, tutto è già accaduto — eppure tutto resta da venire.",
+  "La luce che produce l'assenza del rumore di fondo mette in rilievo il silenzio del senso tra suoni e parole — si vede chiaramente l'energia che trascina il pensiero; bisogna pulire la mente più spesso.",
+  "All'inizio della fine c'era una siepe; all'inizio dell'amore, l'abisso.",
+  "È noto che ciò che pensiamo può diventare realtà; ciò che sogniamo lo è già.",
+  "Non tutto ciò che il cuore può contenere è infinito — oltre un certo spazio porta dolore, diventa oblio; eppure entro quei confini, infinito appare.",
+  "Abbandonati alle risonanze e alla bellezza della genesi delle idee.",
+  "Esci dal tuo mondo mentale! Il tuo dubbio è fertile — bianco o nero non sono la verità; non è per giusto o sbagliato che ciò che davvero accade, accade.",
+  "Bisogna tacere davanti all'incertezza e all'infanzia dei propri pensieri immaturi.",
+  "L'animale è il gemello del consapevole.",
+  "Esiste la possibilità di ospitare l'universo nella potenza di un piccolo cuore.",
+  "Accoppiamento generativo, abbraccio comunitario, duplicazione in accordo.",
+  "Archetipo, ieratico silenzioso — ti lancio uno sguardo.",
+  "Una sola terra sotto il mare."
 ];
 
-var VV=[
-{w:"Densit\u00e0 e rarefazione",d:"Macchia densa: qualcosa si \u00e8 raccolto. Rarefazione: leggerezza o esaurimento. Risorsa o peso?"},
-{w:"Centro e periferia",d:"Centro pieno: interiorit\u00e0. Bordi densi: proiezione verso fuori. Centro vuoto con bordi densi: qualcosa tiene dall\u2019esterno."},
-{w:"Continuit\u00e0 e frattura",d:"Continua: coerenza. Frammentata: discontinuit\u00e0. Ferita o apertura."},
-{w:"Direzione e simmetria",d:"Asimmetria: una spinta prevalente. Simmetria: equilibrio o stallo."},
-{w:"Bordi netti e sfumati",d:"Il bordo \u00e8 una soglia. Netto: chiarezza. Sfumato: permeabilit\u00e0."},
-{w:"Velocit\u00e0",d:"Filiformi: urgenza. Compatti: pazienza, sedimentazione."},
-{w:"Residui e isole",d:"Depositi isolati: pensieri ricorrenti, possibilit\u00e0 accantonate, cose in sospeso."},
+/* Jean Dodal, Tarot de Marseille, Lyon 1701-1715 — public domain */
+const ARCANA = [
+  "https://upload.wikimedia.org/wikipedia/commons/2/2b/Jean_Dodal_Tarot_trump_Fool.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/e0/Jean_Dodal_Tarot_trump_01.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/9/92/Jean_Dodal_Tarot_trump_02.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/bb/Jean_Dodal_Tarot_trump_03.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/ec/Jean_Dodal_Tarot_trump_04.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/7c/Jean_Dodal_Tarot_trump_05.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/70/Jean_Dodal_Tarot_trump_06.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/be/Jean_Dodal_Tarot_trump_07.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/d/dd/Jean_Dodal_Tarot_trump_08.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/6/69/Jean_Dodal_Tarot_trump_09.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/c/ca/Jean_Dodal_Tarot_trump_10.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/0b/Jean_Dodal_Tarot_trump_11.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/2/29/Jean_Dodal_Tarot_trump_12.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/70/Jean_Dodal_Tarot_trump_13.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/2/27/Jean_Dodal_Tarot_trump_14.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/3/38/Jean_Dodal_Tarot_trump_15.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/03/Jean_Dodal_Tarot_trump_16.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/3/30/Jean_Dodal_Tarot_trump_17.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/5/50/Jean_Dodal_Tarot_trump_18.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/ec/Jean_Dodal_Tarot_trump_19.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/4/40/Jean_Dodal_Tarot_trump_20.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/1/1d/Jean_Dodal_Tarot_trump_21.jpg",
 ];
 
-var DOC=[
-{t:"I. Genealogia di una pratica",c:["La caffeomanzia \u00e8 antica quanto il caff\u00e8. La tradizione yemenita, araba, turca e greca della lettura dei fondi \u2014 tasseografia, dal francese tasse, tazza \u2014 risale almeno al XVI secolo, quando il caff\u00e8 raggiunse Costantinopoli e i primi caff\u00e8 pubblici divennero luoghi di conversazione, commercio e divinazione. Il metodo \u00e8 semplice: si beve un caff\u00e8 preparato senza filtrazione (il caff\u00e8 turco, cotto nel cezve con la polvere finissima in sospensione), si capovolge la tazza sul piattino, si attende che i fondi scendano lungo le pareti formando figure, e si legge.","Questa pratica ha attraversato secoli e geografie mantenendo una struttura costante: il caff\u00e8 produce una materia residuale densa, il gesto del capovolgimento trasferisce quella materia sulle pareti della tazza, il tempo di attesa \u00e8 un tempo rituale di sospensione, e la lettura avviene attraverso il riconoscimento di forme in una superficie caotica \u2014 un procedimento analogo al test di Rorschach, al quale \u00e8 storicamente anteriore.","La caffeomanzia cafausica parte da qui ma diverge radicalmente, per tre ragioni.","La prima \u00e8 il mezzo. La cuccumella, il filtro manuale, la moka \u2014 i metodi di estrazione che appartengono alla tradizione italiana e alla pratica contemporanea dello specialty coffee \u2014 producono caff\u00e8 filtrato. I fondi restano nel cestello, nel filtro di carta, nella camera della moka. Nella tazza arriva un liquido essenzialmente pulito. La caffeomanzia classica diventa fisicamente impossibile: manca la materia. Questo vincolo tecnico \u00e8 il punto di partenza dell\u2019invenzione.","La seconda \u00e8 la materia prima. La caffeomanzia cafausica utilizza esclusivamente caff\u00e8 esausto \u2014 chicchi invecchiati, buste dimenticate, specialty coffee che non \u00e8 piaciuto, fondi di magazzino, lotti rifiutati, campioni abbandonati. Caff\u00e8 che il mercato ha dichiarato finito. L\u2019atto fondativo di questa pratica \u00e8 il rifiuto dello spreco: ci\u00f2 che \u00e8 stato scartato trova una funzione diversa, una seconda vita che \u00e8 una vita altra.","La terza \u00e8 il metodo di lettura. La caffeomanzia cafausica legge la materia nella sua materialit\u00e0: densit\u00e0 e rarefazione, centro e periferia, continuit\u00e0 e frattura. Pi\u00f9 vicino alla psicoanalisi che alla chiromanzia."]},
-{t:"Il caff\u00e8 come soglia",c:["Nel mondo cafausico, il caff\u00e8 \u00e8 un medium orfico \u2014 una sostanza che attraversa soglie. Il chicco verde muore nella tostatura, la polvere muore nell\u2019acqua calda, il liquido muore nel corpo di chi beve.","Il caff\u00e8 esausto \u2014 quello che ha gi\u00e0 attraversato tutte le sue soglie utili \u2014 compie un ultimo attraversamento. La sua esaustione \u00e8 la condizione della sua trasformazione in medium. Ci\u00f2 che non serve pi\u00f9 a niente serve a qualcosa che niente altro potrebbe fare."]},
-{t:"Una lettura contemporanea",c:["Jodorowsky ha trasformato i tarocchi da strumento di predizione a strumento di analisi del presente. La caffeomanzia cafausica prova a compiere un\u2019operazione analoga. Il caff\u00e8 produce un\u2019immagine non intenzionale \u2014 un monotipo \u2014 e quell\u2019immagine diventa una superficie proiettiva. Questo riconoscimento \u00e8 il momento oracolare.","La dimensione esoterica resta intatta perch\u00e9 la materia \u00e8 reale. Ogni lettura \u00e8 irripetibile perch\u00e9 ogni combinazione di variabili \u00e8 unica."]},
-{t:"La dimensione politica",c:["Lo spreco del caff\u00e8 \u00e8 un problema reale. Per noi il caff\u00e8 esausto ha un valore rituale, comunitario, estetico, oracolare. Una politica della soglia, in cui ci\u00f2 che \u00e8 finito in un sistema ricomincia in un altro."]},
-{t:"II. Il metodo di lettura",c:["1. Si legge la relazione, non la figura. Come sta questa materia nello spazio?","2. Il vuoto \u00e8 il testo principale. Il vuoto come potenzialit\u00e0.","3. La lettura \u00e8 dialogica. Il caff\u00e8 non predice il futuro. Rende visibile il presente.","4. La carta \u00e8 un archivio. Un monotipo unico, irripetibile, databile.","5. La lettura \u00e8 un atto di ospitalit\u00e0. Tempo, silenzio, presenza."]},
-{t:"V. Il Caff\u00e8 dell\u2019Incontro",c:["Un caff\u00e8 monorigine, trenta-quarantacinque giorni dopo la tostatura, non \u00e8 morto. Ha perso la sua firma. L\u2019individuo \u00e8 diventato categoria.","La metafora giusta non \u00e8 la morte. \u00c8 la perdita di identit\u00e0. Il vuoto c\u2019\u00e8, ma \u00e8 un vuoto sordo.","Aggiungere aromi oscilla tra protesi e possessione. La protesi restituisce una voce. La possessione impone una voce a un corpo ancora vivo.","Il Caff\u00e8 dell\u2019Incontro \u00e8 possibile solo come protesi. Due materie in stato di dispersione si trovano nel punto in cui nessuna \u00e8 pi\u00f9 pienamente s\u00e9 stessa. Il caff\u00e8 \u00e8 il letto, la spezia \u00e8 il sogno."]},
-{t:"VI. Note sulla pratica",c:["La caffeomanzia cafausica funziona esclusivamente con caff\u00e8 esausto. La seconda vita come medium oracolare dipende dalla prima morte come bevanda di piacere.","Il vocabolario \u00e8 un punto di partenza. Ogni praticante svilupper\u00e0 il proprio linguaggio.","La caffeomanzia cafausica \u00e8 un sistema autonomo. La materia parla da s\u00e9.","I monotipi sono opere uniche. L\u2019archivio diventa un\u2019opera di una comunit\u00e0."]},
-];
-
-// COMPONENTS
-function Bg(p){return h("div",{className:"bg-w"},h("img",{src:"img1.png",className:"bg-i i1"+(p.a===1?" on":""),alt:""}),h("img",{src:"img2.png",className:"bg-i i2"+(p.a===2?" on":""),alt:""}),h("div",{className:"bg-o"}))}
-
-function Voc(p){return h("div",{className:"vov"+(p.o?" on":"")},h("div",{style:{maxWidth:600,margin:"0 auto"}},h("div",{className:"vo-t"},"Vocabolario della lettura"),VV.map(function(v,i){return h("div",{key:i,className:"vo-i"},h("div",{className:"vo-w"},v.w),h("div",{className:"vo-d"},v.d))})),h("button",{className:"vo-x",onClick:p.c},"Chiudi vocabolario"))}
-
-// BOTTOM BAR
-// Top row: Inizio (left) | Ricette (center) | Vocabolario (right) — small, at sides
-// Bottom row: ← (big) | counter | → (big) — centered, thumb zone
-function StepBar(p){
-  return h("div",{className:"bb"},
-    p.prog!==undefined?h("div",{className:"bb-prog"},h("div",{className:"bb-prog-f",style:{width:p.prog+"%"}})):null,
-    h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 20px 2px"}},
-      h("button",{className:"bb-ex",onClick:p.home},"Inizio"),
-      h("button",{className:"bb-ex",onClick:p.menu},"Ricette"),
-      h("button",{className:"bb-ex",onClick:p.vocab},"Vocabolario")
-    ),
-    h("div",{style:{display:"flex",justifyContent:"center",alignItems:"center",gap:32,padding:"8px 20px 12px"}},
-      h("button",{className:"bb-btn"+(p.canPrev?"":" off"),onClick:p.prev},"\u2190"),
-      h("div",{className:"bb-ct"},p.count),
-      h("button",{className:"bb-btn",onClick:p.next},p.nextLabel||"\u2192")
-    )
-  );
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
-// STEPS — handles both normal recipes and branching (Incontro)
-function Steps(p){
-  var r=p.recipe;
+const DEATH_INDEX = 13;
+const tarotBg = document.getElementById('tarotBg');
+let deck = [];
+let deckIdx = 0;
+let currentImg = null;
+let carouselTimer = null;
 
-  // Branching recipe state
-  var vi=us(-1),variant=vi[0],setVar=vi[1]; // -1 = in common steps, 0/1/2 = in variant
-  var si=us(0),idx=si[0],setIdx=si[1];
-
-  var steps,len;
-  if(r.branching){
-    if(variant===-1){
-      steps=r.common;
-    } else {
-      steps=r.variants[variant].ss;
-    }
-  } else {
-    steps=r.ss;
-  }
-  len=steps.length;
-  var s=steps[idx];
-  var totalCommon=r.branching?r.common.length:0;
-  var pct;
-  if(r.branching){
-    if(variant===-1) pct=((idx+1)/(totalCommon+3))*100; // approximate
-    else pct=((totalCommon+idx+1)/(totalCommon+steps.length))*100;
-  } else {
-    pct=((idx+1)/len)*100;
-  }
-
-  function prev(){if(idx>0)setIdx(idx-1);else if(variant>=0){setVar(-1);setIdx(totalCommon-1)}}
-  function next(){
-    if(idx<len-1)setIdx(idx+1);
-    else if(r.branching&&variant===-1){/* show variant choice — handled below */}
-    else p.back();
-  }
-
-  ue(function(){window.scrollTo(0,0)},[idx,variant]);
-
-  // Show variant choice screen
-  if(r.branching&&variant===-1&&idx===len-1){
-    // Last common step — after user reads it, next tap shows variant choice
-    // Actually let's show variant choice as a separate screen
-  }
-
-  // Variant choice screen
-  var vc=us(false),showChoice=vc[0],setChoice=vc[1];
-
-  function nextOrChoice(){
-    if(r.branching&&variant===-1&&idx===len-1){
-      setChoice(true);
-    } else {
-      next();
-    }
-  }
-
-  if(showChoice){
-    return h("div",null,
-      h("div",{className:"step"},
-        h("div",{className:"st-nm"},r.nm),
-        h("div",{className:"st-ph"},"Scegli la variante"),
-        h("div",{style:{width:"100%",maxWidth:400}},
-          r.variants.map(function(vr,vi2){
-            return h("div",{key:vi2,className:"rc",style:{marginBottom:16},onClick:function(){setVar(vi2);setIdx(0);setChoice(false)}},
-              h("span",{className:"rc-t"},vr.nm)
-            );
-          })
-        )
-      ),
-      h(StepBar,{
-        prog:pct,home:p.home,menu:p.back,vocab:p.vocab,
-        prev:function(){setChoice(false)},canPrev:true,
-        next:function(){},nextLabel:"",
-        count:""
-      })
-    );
-  }
-
-  var countStr=(idx+1)+" / "+len;
-  var isLast=idx===len-1;
-  var nextLbl;
-  if(r.branching&&variant===-1&&isLast) nextLbl="Scegli \u2192";
-  else if(isLast) nextLbl="Fine";
-  else nextLbl="\u2192";
-
-  return h("div",null,
-    h("div",{className:"step",key:""+variant+"-"+idx},
-      h("div",{className:"st-nm"},r.nm+(variant>=0?" \u2014 "+r.variants[variant].nm:"")),
-      s.p?h("div",{className:"st-ph"},s.p):null,
-      h("div",{className:"st-tx",key:"t"+variant+"-"+idx},s.t),
-      s.n?h("div",{className:"st-nt",key:"n"+variant+"-"+idx},s.n):null
-    ),
-    h(StepBar,{
-      prog:pct,home:p.home,menu:p.back,vocab:p.vocab,
-      prev:prev,canPrev:idx>0||(variant>=0),
-      next:isLast&&!(r.branching&&variant===-1)?p.back:nextOrChoice,
-      nextLabel:nextLbl,
-      count:countStr
-    })
-  );
+function buildDeck() {
+  const rest = ARCANA.filter((_, i) => i !== DEATH_INDEX);
+  const shuffled = shuffle(rest);
+  return [ARCANA[DEATH_INDEX], ...shuffled];
 }
 
-// READ VIEW
-function ReadView(p){
-  return h("div",null,
-    h("div",{className:"read"},
-      DOC.map(function(sec,si2){return h("div",{key:si2},
-        h("h2",null,sec.t),
-        sec.c.map(function(txt,pi){return h("p",{key:pi},txt)})
-      )}),
-      h("div",{className:"cred"},"Lu Cafausu \u2014 Casa Cafausica \u2014 Fondazione Lac o Le Mon")
-    ),
-    h("div",{className:"bb"},
-      h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 20px 14px"}},
-        h("button",{className:"bb-btn",onClick:p.back},"\u2190 Ricette"),
-        h("button",{className:"bb-btn",onClick:p.vocab},"Vocabolario")
-      )
-    )
-  );
+function preload(url) { const img = new Image(); img.src = url; }
+
+function randomPan() {
+  const range = 20;
+  const sx = -range + Math.random() * range * 2;
+  const sy = -range + Math.random() * range * 2;
+  let ex = -range + Math.random() * range * 2;
+  let ey = -range + Math.random() * range * 2;
+  while (Math.abs(ex - sx) + Math.abs(ey - sy) < 12) {
+    ex = -range + Math.random() * range * 2;
+    ey = -range + Math.random() * range * 2;
+  }
+  return { sx, sy, ex, ey };
 }
 
-// APP
-function App(){
-  var vs=us("splash"),v=vs[0],sv=vs[1];
-  var rs=us(null),rc=rs[0],sr=rs[1];
-  var vo=us(false),voc=vo[0],svo=vo[1];
-  function goHome(){sv("splash");sr(null);window.scrollTo(0,0)}
-  function goM(){sv("menu");sr(null);window.scrollTo(0,0)}
-  function goR(r){sr(r);sv("steps");window.scrollTo(0,0)}
-
-  if(v==="splash")return h("div",null,h(Bg,{a:2}),
-    h("div",{className:"splash",onClick:function(){sv("menu")}},
-      h("div",{className:"s1"},"Caffeomanzia"),h("div",{className:"s2"},"Cafausica"),
-      h("div",{className:"s3"},"documenti"),h("div",{className:"s4"},"\u2014 \u2022 \u2014"),
-      h("div",{className:"s5"},"Un manuale di pratica oracolare"),
-      h("div",{className:"s5"},"per caff\u00e8 esausto"),
-      h("div",{className:"s6"},"Lu Cafausu \u2014 Casa Cafausica \u2014 Fondazione Lac o Le Mon"),
-      h("div",{className:"s7"},"tocca per entrare")));
-
-  if(v==="menu")return h("div",null,h(Bg,{a:1}),
-    h("div",{className:"menu"},
-      h("div",{className:"menu-h"},"Scegli il rituale"),
-      RR.map(function(r,i){return h("div",{key:i,className:"rc",onClick:function(){goR(r)}},
-        h("span",{className:"rc-n"},r.num+"."),h("span",{className:"rc-t"},r.nm),h("span",{className:"rc-d"},r.ds))}),
-      h("div",{className:"menu-sep"},"\u2014 \u2022 \u2014"),
-      h("div",{className:"rc",onClick:function(){sv("read");window.scrollTo(0,0)}},
-        h("span",{className:"rc-t"},"Leggi il manuale"),
-        h("span",{className:"rc-d"},"Genealogia, metodo di lettura, vocabolario, note")),
-      h("div",{className:"rc",onClick:function(){svo(true)}},
-        h("span",{className:"rc-t"},"Vocabolario della lettura"),
-        h("span",{className:"rc-d"},"I sette termini per leggere la materia"))
-    ),
-    h("div",{className:"bb"},
-      h("div",{style:{display:"flex",justifyContent:"center",padding:"10px 20px 14px"}},
-        h("button",{className:"bb-ex",onClick:goHome},"\u2190 Inizio")
-      )
-    ),
-    h(Voc,{o:voc,c:function(){svo(false)}}));
-
-  if(v==="steps"&&rc)return h("div",null,h(Bg,{a:1}),
-    h(Steps,{recipe:rc,back:goM,home:goHome,vocab:function(){svo(true)}}),
-    h(Voc,{o:voc,c:function(){svo(false)}}));
-
-  if(v==="read")return h("div",null,h(Bg,{a:1}),
-    h(ReadView,{back:goM,vocab:function(){svo(true)}}),
-    h(Voc,{o:voc,c:function(){svo(false)}}));
-
-  return null;
+function nextCard() {
+  preload(deck[(deckIdx + 1) % deck.length]);
+  preload(deck[(deckIdx + 2) % deck.length]);
+  const img = document.createElement('img');
+  img.src = deck[deckIdx]; img.alt = '';
+  const pan = randomPan();
+  img.style.top = pan.sy + '%';
+  img.style.left = pan.sx + '%';
+  img.style.transition = 'none';
+  tarotBg.appendChild(img);
+  requestAnimationFrame(() => { requestAnimationFrame(() => {
+    img.classList.add('visible');
+    img.style.transition = 'opacity 2.5s ease-in, top 9s ease-in-out, left 9s ease-in-out';
+    img.style.top = pan.ey + '%';
+    img.style.left = pan.ex + '%';
+  }); });
+  if (currentImg) {
+    const old = currentImg;
+    old.classList.remove('visible'); old.classList.add('fading');
+    setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 2500);
+  }
+  currentImg = img;
+  deckIdx = (deckIdx + 1) % deck.length;
+  if (deckIdx === 0) deck = buildDeck();
+  carouselTimer = setTimeout(nextCard, 8000);
 }
-ReactDOM.createRoot(document.getElementById("root")).render(h(App));
+
+deck = buildDeck();
+preload(deck[0]); preload(deck[1]); preload(deck[2]);
+setTimeout(nextCard, 400);
+
+const homeScreen = document.getElementById('home');
+const cartaScreen = document.getElementById('carta');
+const respiraScreen = document.getElementById('respira');
+const respiraText = document.getElementById('respiraText');
+const domandaWrap = document.getElementById('domandaWrap');
+const infoScreen = document.getElementById('info');
+const msgText = document.getElementById('msgText');
+
+function showRespira() {
+  respiraText.classList.remove('visible', 'hidden');
+  domandaWrap.classList.remove('visible');
+  homeScreen.classList.remove('active');
+  clearTimeout(carouselTimer);
+  setTimeout(() => {
+    respiraScreen.classList.add('active');
+    setTimeout(() => respiraText.classList.add('visible'), 100);
+    setTimeout(() => {
+      respiraText.classList.add('hidden');
+      setTimeout(() => domandaWrap.classList.add('visible'), 600);
+    }, 2000);
+  }, 600);
+}
+
+function showCarta() {
+  msgText.textContent = MESSAGGI[Math.floor(Math.random() * MESSAGGI.length)];
+  msgText.classList.remove('visible');
+  respiraScreen.classList.remove('active');
+  setTimeout(() => {
+    cartaScreen.classList.add('active');
+    setTimeout(() => msgText.classList.add('visible'), 500);
+  }, 600);
+}
+
+function showHome() {
+  cartaScreen.classList.remove('active');
+  respiraScreen.classList.remove('active');
+  infoScreen.classList.remove('active');
+  msgText.classList.remove('visible');
+  respiraText.classList.remove('visible', 'hidden');
+  domandaWrap.classList.remove('visible');
+  setTimeout(() => {
+    deck = buildDeck();
+    deckIdx = 0;
+    while (tarotBg.firstChild) tarotBg.removeChild(tarotBg.firstChild);
+    currentImg = null;
+    setTimeout(nextCard, 300);
+    homeScreen.classList.add('active');
+  }, 600);
+}
+
+function showInfo() {
+  homeScreen.classList.remove('active');
+  clearTimeout(carouselTimer);
+  setTimeout(() => {
+    infoScreen.scrollTop = 0;
+    infoScreen.classList.add('active');
+  }, 600);
+}
+
+document.getElementById('btnDot').addEventListener('click', showRespira);
+document.getElementById('btnTitle').addEventListener('click', showRespira);
+document.getElementById('btnDotRespira').addEventListener('click', showCarta);
+document.getElementById('btnInfo').addEventListener('click', function(e) { e.stopPropagation(); showInfo(); });
+document.getElementById('btnTorna').addEventListener('click', showHome);
+document.getElementById('btnInfoBack').addEventListener('click', showHome);
 </script>
 </body>
 </html>
